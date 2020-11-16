@@ -1,37 +1,47 @@
-## Welcome to GitHub Pages
+# **Manager.js**
 
-You can use the [editor on GitHub](https://github.com/kevinJ045/Managerjs/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## What is it?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+**Manager.js** is a **javascript** library that lets you use  
+some modules that I thought are usefull for web developers.  
+  
+This means **Manager.js** is an important Module to use in your  
+projects
 
-### Markdown
+## Why should i use it?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
++   It is simple to work with
++   It has a localStorage Manager
++   It has a cookie manager
++   It has a module manager
++   And a lot more usefull modules
 
-```markdown
-Syntax highlighted code block
+## How do I use it?
 
-# Header 1
-## Header 2
-### Header 3
+As i've told you before, **Manager.js** has a lot of modules,  
+so it must have been simple to use, that's why i  
+Made it soo easy to use it
 
-- Bulleted
-- List
+### Importing
 
-1. Numbered
-2. List
+  ```html
+  &lt;script src="/path/to/manager.js">&lt;/script>
+  ```
 
-**Bold** and _Italic_ and `Code` text
+### Usage
 
-[Link](url) and ![Image](src)
-```
+  ```javascript
+  	Manager.module();
+  ``` 
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Compatibility
 
-### Jekyll Themes
+**Manager.js** is compatible with almost everywhere.  
+but it currently needs Jquery as a main excutor,
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kevinJ045/Managerjs/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Demo
 
-### Support or Contact
+There is a demo at this repo, open it and be sure to open  
+the DevTools,
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+# Thanks !!
