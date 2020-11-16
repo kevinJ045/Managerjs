@@ -25,7 +25,7 @@ Made it soo easy to use it
 ### Importing
 
   ```html
-  &lt;script src="/path/to/manager.js">&lt;/script>
+  <script src="/path/to/manager.js"</script>
   ```
 
 ### Usage
