@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manager.js</title>
+  <link rel="stylesheet" type="text/css" href="demo/demo.css">
+</head>
+<body>
+
+
+  <h1 data-type="Manager.js"></h1>
+  <p data-type="A javascript library to manage Localstorage,Date,Cookies,Ajax/JQuert Ajax,Object Manager"></p>
+  <a class="a github-commit" href="https://github.com/kevinj045/jsbuttons">
+    GitHub Forks: NAN <!-- Here Will be appended the forks from github-->
+  </a>
+
+  <br><br>
+
+  <section data-title="Compatiblity" id="section-compatiblity">
+    <h2 data-type="Manager js compatiblity"></h2>
+    <p data-type="Manager.js is compatible with every framework.^ bootstrap,materialize,framework7, etc... this little plugin is realy important to use,^"></p>
+  </section>
+
+  <section data-title="Table o' contents" id="section-TABLE">
+    <h2 data-type="Manager js properties"></h2>
+    <p data-type="Manager js properties / modules are explained below"></p>
+    <div class="tableContr free">
+      <table>
+        <thead>
+          <tr>
+            <td>Module/<br>Property</td>
+            <td>Type</td>
+            <td>Module Init</td>
+            <td>Use</td>
+          </tr>
+        </thead>
+        <tbody id="PROPERTIESTABLE">
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section data-title="Localstorage" id="section-LocalStorage">
+    <h2 data-type="Manager js demo"></h2>
+    <p data-type="Manager.js Localstorage demo"></p>
+    <input type="text" id="searchInput" placeholder="Filter...">
+    <div id="LSMJS"></div>
+
+    <button class="a" id="reload">
+      Reload
+    </button>
+    <button class="a" onclick="lsm.default.set('new','You Added this');
+    outPutLocalStorage();">
+      Set Item To Manager
+    </button>
+    <button class="a" onclick="lsm.default.remove('new');outPutLocalStorage();">
+      Remove Item From Manager
+    </button>
+  </section>
+
+  <section data-title="Localstorage Forms" id="section-LocalStorage-fromSave">
+    <h2 data-type="Manager js Form Save"></h2>
+    <p data-type="Manager.js Form Save demo"></p>
+
+    <form id="Demo__Form">
+      
+      <input type="text" name="Demo__input_t"> <!-- name or id is required -->
+
+      <input type="password" name="Demo__input_p"> <!-- name or id is required -->
+
+      <input type="number" name="Demo__input_n"> <!-- name or id is required -->
+
+      <input type="date" name="Demo__input_date"> <!-- name or id is required -->
+
+      <input type="time" name="Demo__input_time"> <!-- name or id is required -->
+
+      <div class="slidecontainer">
+        <input type="range" name="Demo__input_ra"> <!-- name or id is required -->
+      </div>
+
+      <div class="checkContr">
+        <label class="check">
+          <input type="checkbox" name="Demo__input_c"> <!-- name or id is required -->
+          <span class="mark"></span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="Demo__input_r" value="4"> <!-- name or id is required -->
+          <span class="mark"></span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="Demo__input_r" value="5"> <!-- name or id is required -->
+          <span class="mark"></span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="Demo__input_r" value="6"> <!-- name or id is required -->
+          <span class="mark"></span>
+        </label>
+      </div>
+
+      <textarea id="Demo__input_ta">
+        
+      </textarea>
+
+      <select id="Demo__input_se">
+        <option>Hello</option>
+        <option>Hii</option>
+        <option>Have a nice day(or night)</option>
+      </select>
+
+    </form>
+
+  </section>
+
+  <section data-title="Cookies" id="section-Cookies">
+    <h2 data-type="Manager js Cookie manager"></h2>
+    <p data-type="Manager has also a Cookie Manager, lets you use Cookies"></p>
+  </section>
+
+  <section data-title="Sorting & Filtering" id="section-sortingsnfilterings">
+    <h2 data-type="Manager Sorting & Filtering"></h2>
+    <p data-type="Manager.js Also has sorting & filtering methods For Lists and Tables,^There are two types of sorting, which are a-z & z-a, and also two types of filtering, which are Clickable An Typeable"></p>
+
+
+    <input type="text" id="filterInput" placeholder="Type To Search">
+    <ul id="listToSort" class="searchable">
+      <li>Oslo</li>
+      <li>Stockholm</li>
+      <li>Helsinki</li>
+      <li>Berlin</li>
+      <li>Rome</li>
+      <li>Madrid</li>
+    </ul>
+
+    <div class="tableContr">
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Country</td>
+          </tr>
+        </thead>
+        <tbody id="tableToSort" class="searchable">
+          <tr>
+            <td>Ahmed</td>
+            <td>Saudi Arabia</td>
+          </tr>
+          <tr>
+            <td>John</td>
+            <td>Texas</td>
+          </tr>
+          <tr>
+            <td>Briana</td>
+            <td>New York</td>
+          </tr>
+          <tr>
+            <td>Alison</td>
+            <td>Algeria</td>
+          </tr>
+        <tbody>
+      </table>
+    </div>
+
+    <button class="a" onclick="sort()">
+      Sort <span class="SortingMTH"></span>
+    </button>
+  </section>
+
+  <section data-title="Object Controller" id="section-controllers">
+    <h2 data-type="Manager Object & Controller Manager"></h2>
+    <p data-type="This feature is an object & controller manager, usefull for storing big object datas,it is mainly usefull for big Objects,"></p>
+    <div class="tableContr">
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Values</td>
+          </tr>
+        </thead>
+        <tbody id="allObjs">
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <input type="text" id="allObjs_New" placeholder="id">
+      <input type="text" id="allObjs_New_val" placeholder="value">
+      <button class="a" id="allObjs_add">
+        Add
+      </button>
+      <button class="a" id="allObjs_remove">
+        Remove
+      </button>
+
+      <h4>Module Lists</h4>
+
+
+      <manager-module module="Demo">
+        
+        <div class="box">
+          Using <code>module</code> tag, and <code attr>[prints="value"]</code> <br>attribute
+          <module name="newItem" prints="value" value="newValue">
+            
+          </module>
+        </div>
+
+        <div class="box">
+          Using <code>module</code> tag, and <code attr>[prints]</code> attribute<br>
+          <module name="newItem" prints="all">
+            
+          </module>
+        </div>
+
+        <div class="box">
+          Using {{[id]}} to print $scopes,<br>
+          {{newItem}}
+        </div>
+
+      </manager-module>
+
+
+    </div>
+    <br>
+    <br>
+
+  </section>
+
+  <section data-title="Ajax/Http" id="section-ajax">
+    <h2 data-type="Manager Http/Ajax"></h2>
+    <p data-type="Manager Also has Ajax or xhttp,this feature let's you use XMLhttprequest on your websites and webapps"></p>
+
+    <div id="FileLoader"></div>
+
+    <button class="a" onclick="loadFile('txt')">
+      data.txt
+    </button>
+    <button class="a" onclick="loadFile('json')">
+      data.json
+    </button>
+    <button class="a" onclick="loadFile('xml')">
+      data.xml
+    </button>
+
+    <h4>Manager Include</h4>
+    <manager-include file="./data/iframe.html"></manager-include>
+    <manager-include file="./data/data.json"></manager-include>
+    <manager-include file="./data/data.xml"></manager-include>
+    <manager-include file="./data/data.txt"></manager-include>
+  </section>
+
+
+  <section data-title="Time & Date" id="section-TIMEDate">
+    <h2 data-type="Manager Time Manager"></h2>
+    <p data-type="The timeManager feature is related to Date() and stuff, you can use i to control your Date() methods"></p>
+    <div id="timeManager">
+      0
+    </div>
+
+    <button class="a" onclick="TM.stopCounts();TM.countDown(60,function(time){
+      $('#timeManager').html(time);
+    });">
+      Make CountDown
+    </button>
+    <button class="a" onclick="TM.stopCounts();TM.countUp(60,function(time){
+      $('#timeManager').html(time);
+    });">
+      Make CountUp
+    </button>
+    <button class="a" onclick="TM.stopCounts();
+    var str__time = TM.toStr(Number($('#contenter').text()));
+      $('#timeManager').html(str__time);">
+      Covert: <span id="contenter" contenteditable="true">2500</span>
+    </button>
+    <button class="a" onclick="
+      TM.stopCounts();
+      $('#timeManager').html(dayName);">
+      Get DayName
+    </button>
+    <button class="a" onclick="
+      TM.stopCounts();
+      $('#timeManager').html(Time.D());">
+      Get The Date
+    </button>
+  </section>
+
+  <section data-title="Modules" id="section-modules">
+    <h2 data-type="Manager Modules"></h2>
+    <p data-type="Manager Modules are components which lets you import modules to Manager"></p>
+
+      <textarea placeholder="Type Code Here like alert('hii')" id="FunctionForModule"></textarea>
+
+    <button class="a" onclick="imp_ort_comp()">
+      Import
+    </button>
+    <button class="a" onclick="run_comp()">
+      Run
+    </button>
+    <button class="a" onclick="delete_comp()">
+      Delete
+    </button>
+    <button class="a" onclick="exp_ort_comp()">
+      Export And Run
+    </button>
+  </section>
+
+  <section data-title="Randomness" id="section-randoms">
+    <h2 data-type="Manager Randomness"></h2>
+    <p data-type="Manager.js Random.js is a module which lets you use random words and numbers easily"></p>
+
+    <button class="a" onclick="alert(Manager.randFrom(282828,92982));">
+      Random Number
+    </button>
+    <button class="a" onclick="alert(Manager.pickRandom('Hello','HII','How Are You?'));">
+      Random Word
+    </button>
+    <button class="a" onclick="var Words = ['Hello','HII','How Are You?'];alert(Manager.pickRandom(Words));">
+      Random Word From Variable 
+    </button>
+  </section>
+
+  <section data-title="Iframes" id="section-iframes">
+    <h2 data-type="Manager Iframes"></h2>
+    <p data-type="Manager.js Iframe Manager is a module which lets you control elemnts inside iframes"></p>
+
+    <div id="iframeToControl"></div>
+
+    <button class="a" onclick="ifr_toggle('div');">
+      Toggle Element
+    </button>
+    <button class="a" onclick="ifr_append('Hello<br>')">
+      Append Text
+    </button>
+    <button class="a" onclick="ifr_getTitle()">
+      Get the title
+    </button>
+    <button class="a" onclick="ifr_height(500,200)">
+      Set Height
+    </button>
+    <button class="a" onclick="iframe_.reload();iframe = iframe_.getIframe();">
+      Reload
+    </button>
+  </section>
+
+  <section data-title="Color Picker" id="section-colors">
+    <h2 data-type="Manager Color Picker"></h2>
+    <p data-type="Manager.js Color Picker is a Module that let's you: convert rgb to hex,hex to rgb,to hls"></p>
+
+    <center>
+      <div style="width: 100px;height: 100px;background: #fff;" id="colorPicker">
+      
+      </div>
+    </center>
+
+    <br>
+
+    <input id="cpValue" type="text" />
+    
+    <button class="a" onclick="covertCP($('#cpValue').val())">
+      Convert
+    </button>
+  </section>
+
+  <section data-title="Components" id="section-components">
+    <h2 data-type="Manager Components"></h2>
+    <p data-type="Manager.js Component Manager is a module which lets you use components like, getHeader(),getFooter(),Fullscreen... "></p>
+
+    <button class="a" onclick="comp.Fullscreen.open();">
+      Fullscreen
+    </button>
+    <button class="a" onclick="comp.Fullscreen.close();">
+      Close Fullscreen
+    </button>
+  </section>
+
+  <div id="menu">
+    
+    <ul>
+
+    </ul>
+
+    <button class="a" id="menuToggle">
+      Menu
+    </button>
+  </div>
+
+
+
+
+  <script src="./lib/jquery.min.js"></script>
+  <script type="application/javascript" src="./src/manager.js"></script>
+
+  <script>
+    Manager.require('./data/typer.js');//.appendTo('body');
+    var reqjs = Manager.require('./data/req.js',{
+      "as": "hello",
+      "extends": true,
+    });
+
+    reqjs.ready(function(script){
+      //console.log(script.script,script.file)
+      //hello(); // This is right
+    });
+
+    //hello(); // This will return an error();
+    
+
+    Manager.require('./demo/demo.js');
+
+    console.log(Manager,typeof Manager,typeof Manager.__proto__,"manager");
+  </script>
+
+  <script type="text/javascript">
+    $.ajax({
+      url: 'https://api.github.com/repos/kevinj045/Managerjs/commits/master',
+      dataType: 'json',
+      success: function(data) {
+        var sha = data.sha;
+        $('.github-commit')
+          .html('GitHub Forks: '+sha)
+          .attr('href', data.html_url);
+      }
+    }); 
+  </script>
+</body>
+</html>

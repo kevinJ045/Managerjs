@@ -1,0 +1,14 @@
+<books>
+	<book id="The Farmer">
+		<author>A Farmer</author>
+		<price by="$">89</price>
+	</book>
+	<book id="Awaken The Gaint Within">
+		<author>idk who</author>
+		<price by="$">45</price>
+	</book>
+	<book id="A normal book">
+		<author>a normal author</author>
+		<price by="$">45</price>
+	</book>
+</books>
