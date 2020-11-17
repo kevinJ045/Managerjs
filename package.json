@@ -1,11 +1,1 @@
-{
-  "name": "managerjs",
-  "version": "1.0.4",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
-  "description": "Simple Javascript library to manage Javascript modules.",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kevinj045/Managerjs/issues"
-  },
-  "homepage": "https://github.com/kevinj045/Managerjs#readme"
-}
+
