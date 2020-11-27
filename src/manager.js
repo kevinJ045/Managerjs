@@ -26,11 +26,28 @@
   (global = global || self, factory(global.Manager, global.jQuery));
 }(this, function (exports, $) { 'use strict';
 
+  if(window.jQuery == null || window.jQuery == undefined
+    || window.jQuery == undefined || window.jQuery == null){
+    window.Manager = {};
+    window.$m = {};
+    stop();
+    throw new Error('\n ERROR, jquery is not defined, Manager requires jquery to work perfectly');
+    return "ERROR, jquery is not defined";
+  } else if(!XMLHttpRequest && !window.ActiveXObject){
+    window.Manager = {};
+    window.$m = {};
+    stop();
+    throw new Error('\n ERROR, XMLHttpRequest is not defined, Manager requires XMLHttpRequest to work perfectly');
+    return "ERROR, XMLHttpRequest is not defined";
+  } else {};
+
+
+
   var plugin = { 
     name: 'Manager.js',
     developer: 'Kevin',
     description: 'A javascript library to enhance and manage javascript',
-    git_repo: 'https://github.com/kevinj045/manager.js',
+    git_repo: 'https://github.com/kevinj045/Managerjs',
     version: "1.0.4.3",
     LSM: {
       version: '1.0.5.01.2',
@@ -44,17 +61,68 @@
       version: '3.54.12',
       credits: ['kevinj045',"Tantau Horia"],
     },
+    browserInfo: {
+      version: "1.0.0", // Unknown
+      credits: ['kevinj045',"akinari tsugo"]
+    },
     others: {
       credits: ['kevinj045','Jeremy Ashkenas and DocumentCloud']
-    }
-  },fileTypes = {
+    },
+    get info(){return this},
+  },currentScript = document.currentScript,
+  fileTypes = {
     html: "application/html",
     css: "stylesheet/css",
     js: "application/javascript",
     xml: "application/xml",
     xquery: "application/xquery",
     php: "application/x-httpd-php",
-  },FN = $,
+  },FN = jQuery,
+  testNameCase = function(name){
+    name = /\./img.test(name) ? name.replace(/\./img,'_') : name;
+    name = /\#/img.test(name) ? name.replace(/\#/img,'3_') : name;
+    name = /\[/img.test(name) ? name.replace(/\[/img,'C_') : name;
+    name = /\]/img.test(name) ? name.replace(/\]/img,'_3') : name;
+    name = /\=/img.test(name) ? name.replace(/\=/img,'___') : name;
+    name = /\"/img.test(name) ? name.replace(/\"/img,'_1') : name;
+    name = /\'/img.test(name) ? name.replace(/\'/img,'_2') : name;
+    name = /\:/img.test(name) ? name.replace(/\:/img,'_22') : name;
+    name = /\{/img.test(name) ? name.replace(/\{/img,'5_') : name;
+    name = /\}/img.test(name) ? name.replace(/\}/img,'_6') : name;
+    name = /\@/img.test(name) ? name.replace(/\@/img,'2_') : name;
+    name = /\,/img.test(name) ? name.replace(/\,/img,'_9_') : name;
+    name = /\*/img.test(name) ? name.replace(/\*/img,'8_') : name;
+
+    return name;
+  },
+  wordToNum = function(word){
+    var wrd = word,
+    index = -1,
+    numbers = {
+      zero: /zero/img,
+      one: /one/img,
+      two: /two/img,
+      three: /three/img,
+      four: /four/img,
+      five: /five/img,
+      six: /six/img,
+      seven: /seven/img,
+      eight: /eight/img,
+      nine: /nine/img,
+      ten: /ten/img,
+      eleven: /eleven/img,
+      twelve: /twelve/img,
+    };
+    for(var number in numbers){
+      index++;
+      var cnum = numbers[number];
+      wrd = cnum.test(wrd) ? wrd.replace(cnum,index) : wrd;
+    }
+
+    wrd = /teen/img.test(wrd) ? wrd.replace(/teen/img,'') : wrd;
+
+    return wrd;
+  },
   str = function(text) {
     return new String(text.toString())
   },JT = function(text) {
@@ -75,7 +143,12 @@
     var randomWord = toArray2(words);
     var rand = Math.floor(Math.random() * randomWord.length);
     return randomWord[rand];
-  },onRE = /^@|^manager:/,
+  },giveKeyPath = function(keyPath){
+    return `<script>
+      document.writeln(${keyPath});
+    </script>`;
+  },
+  onRE = /^@|^manager:/,
   max,min,chroma,
   ct__ = "{{",
   ce__ = "}}",
@@ -131,7 +204,11 @@
     }
 
     return null;
-  };
+  },_get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } },
+  _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(),
+  _possibleConstructorReturn = function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; },
+  _inherits = function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; },
+  _classCallCheck = function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
   config.defaults = {};
 
@@ -144,12 +221,204 @@
   };
 
   $("<style></style>").html(`
-    manager-include,manager-module,manager-module module{
+    manager-include,manager-module,manager-module module,manager-script{
       width: 100%;
       height: auto;
       clear: both;
     }
+    manager-script{
+      display: none;
+      visiblity: hidden;
+      width: 0px;
+      height 0px;
+      position: absolute;
+      top: -12882772px;
+      left: -4747494949px;
+      opacity: 0;
+    }
   `).appendTo('head');
+
+  class ManagerModule extends HTMLElement{
+    constructor(){
+      super();
+    }
+
+    displayObject(Contrs,contr,O_B_J){
+      var $that = $(this);
+      var getElementsByAttribute = function (x, att) {
+        var arr = [], arrCount = -1, i, l, y = x.getElementsByTagName("*"), z = att.toUpperCase();
+        l = y.length;
+        for (i = -1; i < l; i += 1) {
+          if (i == -1) {y[i] = x;}
+          if (y[i].getAttribute(z) !== null) {arrCount += 1; arr[arrCount] = y[i];}
+        }
+        return arr;
+      };  
+
+      function _displayObject(id, data) {
+        var htmlObj, htmlTemplate, html, arr = [], a, l, rowClone, x, j, i, ii, cc, repeat, repeatObj, repeatX = "";
+        htmlObj = $that[0];
+        htmlTemplate = init_template(id, htmlObj);
+        html = htmlTemplate.cloneNode(true);
+        arr = getElementsByAttribute(html, "repeat");
+        l = arr.length;
+        for (j = (l - 1); j >= 0; j -= 1) {
+          cc = arr[j].getAttribute("repeat").split(" ");
+          if (cc.length == 1) {
+            repeat = cc[0];
+          } else {
+            repeatX = cc[0];
+            repeat = cc[2];
+          }
+          arr[j].removeAttribute("repeat");
+          repeatObj = data[repeat];
+          if (repeatObj && typeof repeatObj == "object" && repeatObj.length != "undefined") {
+            i = 0;
+            for (x in repeatObj) {
+              i += 1;
+              rowClone = arr[j];
+              rowClone = replaceCurly(rowClone, "element", repeatX, repeatObj[x]);
+              a = rowClone.attributes;
+              for (ii = 0; ii < a.length; ii += 1) {
+                a[ii].value = replaceCurly(a[ii], "attribute", repeatX, repeatObj[x]).value;
+              }
+              (i === repeatObj.length) ? arr[j].parentNode.replaceChild(rowClone, arr[j]) : arr[j].parentNode.insertBefore(rowClone, arr[j]);
+            }
+          } else {
+            console.log("repeat must be an array. " + repeat + " is not an array.");
+            continue;
+          }
+        }
+        html = replaceCurly(html, "element");
+        htmlObj.parentNode.replaceChild(html, htmlObj);
+        function init_template(id, obj) {
+          var template;
+          template = obj.cloneNode(true);
+          if (Contrs.hasOwnProperty(id)) {return Contrs[id];}
+          Contrs[id] = template;
+          return template;
+        }
+        function replaceCurly(elmnt, typ, repeatX, x) {
+          var value, substr, match, Obj = data, keyPath, rowClone, pos1, pos2, originalHTML, lookFor, lookForARR = [], i, cc, r;
+          rowClone = elmnt.cloneNode(true);
+          pos1 = 0;
+          while (pos1 > -1) {
+            originalHTML = (typ == "attribute") ? rowClone.value : rowClone.innerHTML;
+            pos1 = originalHTML.indexOf(ct__, pos1);
+            if (pos1 === -1) {break;}
+            pos2 = originalHTML.indexOf(ce__, pos1 + 1);
+            lookFor = originalHTML.substring(pos1 + 2, pos2);
+            lookForARR = lookFor.split("||");
+            value = undefined;
+            Obj = data;
+            for (i = 0; i < lookForARR.length; i += 1) {
+              Obj = data;
+              lookForARR[i] = lookForARR[i].replace(/^\s+|\s+$/gm, ''); //trim
+              if (x) {value = x[lookForARR[i]];}
+              if (value == undefined && data) {value = data[lookForARR[i]];}
+              if (value == undefined) {
+                Obj = data;
+                keyPath = lookForARR[i];
+                substr = keyPath;
+
+                if(keyPath.match(/\./) || keyPath.match(/\[/igm)){
+                  Obj = data;
+
+                  function getWithDot(variable1){
+                    match = substr.split(variable1);
+                    match.forEach(function(variable,index){
+                      if(index == 0){Obj = data;};
+                      if(variable.match(/\[/igm)){
+                        getWithBrack(variable);
+                      } else {
+                        Obj = Obj[variable];
+                      }
+                    });
+                  }
+
+                  function getWithBrack(variable1){
+                    match = variable1.split('[')[1].split(']')[0];
+                    keyPath = variable1.replace("["+match+"]",'');
+                    if(keyPath.indexOf(/\[/igm) >= 0){
+                      match = substr.split(variable1);
+                      match.forEach(function(variable,index){
+                        if(index == 0){Obj = data;};
+                        getWithBrack(variable);
+                      });
+                    } else {
+                      match = match.replace(/\"/igm,"");
+                      Obj = Obj[keyPath];
+                      Obj = Obj[match] != undefined ? Obj[match] : Obj;
+                    }
+                  }
+
+                  if(keyPath.match(/\./)){
+                    keyPath = keyPath.match(/\./igm);
+                    keyPath.forEach(function(variable1,index){
+                      getWithDot(variable1);
+                    });
+                  } else if(keyPath.match(/\[/igm)){
+                    keyPath = keyPath.split("[");
+                    keyPath.forEach(function(variable,index){
+                      getWithBrack(variable);
+                    });
+                  } else {}
+                 
+                  keyPath = Obj;
+                  value = keyPath;
+                  substr = null;
+                  Obj = data;
+                } else {}
+              }
+              if (value == undefined) {
+                if (lookForARR[i] == repeatX) {value = x;}
+              }
+              if (value == undefined) {
+                if (lookForARR[i].substr(0, 1) == '"') {
+                  value = lookForARR[i].replace(/"/g, "");
+                } else if (lookForARR[i].substr(0,1) == "'") {
+                  value = lookForARR[i].replace(/'/g, "");
+                }
+              }
+              if (value != undefined) {break;}
+            }
+            if (value != undefined) {
+              r = ct__ + lookFor + ce__;
+              if (typ == "attribute") {
+                rowClone.value = rowClone.value.replace(r, value);
+              } else {
+                replaceHtml(rowClone, r, value);
+              }
+            }
+            pos1 = pos1 + 1;
+            Obj = data;
+          }
+          Obj = data;
+          return rowClone;
+        }
+        function replaceHtml(a, r, result) {
+          var b, l, i, a, x, j;
+          if (a.hasAttributes()) {
+            b = a.attributes;
+            l = b.length;
+            for (i = 0; i < l; i += 1) {
+              if (b[i].value.indexOf(r) > -1) {b[i].value = b[i].value.replace(r, result);}
+            }
+          }
+          x = a.getElementsByTagName("*");
+          l = x.length;
+          a.innerHTML = a.innerHTML.replace(r, typeof result == "object" ? JT(result) : result);
+        }
+      };
+
+      _displayObject(contr,O_B_J);
+    }
+
+    connectedCallback(){
+      
+    }
+  }
+  customElements.define('manager-module',ManagerModule);
 
   // +++
   // + Error Handlers
@@ -191,7 +460,19 @@
     }
   }
 
+  document.currentScript.noModule = false;
 
+  if(currentScript == null){
+    errors.err("The currentScript is null,"+
+      " it must be an Object to let manager work\n"+
+      " You will need to declare the type of the"+
+      " script by adding the type attribute and making it " + fileTypes.js);
+  } else if(currentScript.type != fileTypes.js){
+    errors.err("The type of the script is not " + fileTypes.js +
+    " It is "+ currentScript.type +". It must be " + fileTypes.js + 
+    " to make Manager work well," + "please make it " + fileTypes.js +
+    " ny using the attribute type,");
+  } else {}
 
 
   // +++
@@ -959,7 +1240,15 @@
       }
 
     },
+    
+    __proto__: {
+      get _get(){
 
+      },
+      set _set(___){
+
+      },
+    },
   }
 
   function TM(options){
@@ -1141,6 +1430,7 @@
       name = name_ != null ? name_ : '';
       clearInterval(that.timeData["IntervaTime" + "_" + name])
     },
+    
   }
 
   function filter__($input,$el,options = {}){
@@ -1285,20 +1575,37 @@
               }
           }
       },
+      __proto__: function(){
+        return this;
+      }
   };
 
   function OBJManager(name){
     var that = this;
     if(that.constructor(manager).Objs == undefined){
-      that.constructor(manager).Objs = {};
+      _createClass(that.constructor(manager),null,[
+        {
+          key: "Objs",
+          value: {},
+        }
+      ]);
     } else {}
+
     if(that.constructor(manager).Objs[name] == undefined){
-      that.constructor(manager).Objs[name] = {};
+      _createClass(that.constructor(manager).Objs,null,[
+        {
+          key: name,
+          value: {},
+        }
+      ]);
     } else {}
     
 
     that.name = name;
     that.Objs = that.constructor(manager).Objs;
+
+    that.__proto__.arrays = Array;
+    that.__proto__.objects = Object;
   }
 
   OBJManager.prototype = {
@@ -1347,189 +1654,80 @@
       contrs[contr] = O_B_J;
       fun(O_B_J);
 
-      $('manager-module[module="'+contr+'"],[manager-module="'+contr+'"]').each(function(e,index){
-        var $that = $(this),value,elemId = 'manager-module_'+contr+"_"+e;
+      function OutPutController(){
 
-        $that.attr('id',elemId);
+        $('manager-module[module="'+contr+'"],[manager-module="'+contr+'"]').each(function(e,index){
+          var $that = $(this),value,elemId = 'manager-module_'+contr+"_"+e;
 
-        $that.find('module').each(function(){
-          var $ths = $(this);
+          $that.attr('id',elemId);
 
-          
+          $that.find('module').each(function(){
+            var $ths = $(this);
 
-          if($ths.attr('name')){
-            if($ths.attr('value')){
-              value = $ths.attr('value');
-              O_B_J[$ths.attr('name')] = value;
+                    
+
+            if($ths.attr('name')){
+              if($ths.attr('value')){
+                value = $ths.attr('value');
+                O_B_J[$ths.attr('name')] = value;
+              }
+
+              value = O_B_J[$ths.attr('name')];
+
+              if(value != undefined){
+                if($ths.attr('prints')){
+                  if(typeof O_B_J[$ths.attr('name')] == "object") value = JT(O_B_J[$ths.attr('name')]);
+                  if($ths.attr('prints') == "value"){
+                    $ths.html(value);
+                  } else {
+                    $ths.html($ths.attr('name') + " = " +value);
+                  }
+                } else {}
+              } else {
+                errors.err($ths.attr('name') + " Is not defined.");
+              } 
+            } else {
+
             }
 
-            value = O_B_J[$ths.attr('name')];
-
-            if(value != undefined){
-              if($ths.attr('prints')){
-                if(typeof O_B_J[$ths.attr('name')] == "object") value = JT(O_B_J[$ths.attr('name')]);
-                if($ths.attr('prints') == "value"){
-                  $ths.html(value);
-                } else {
-                  $ths.html($ths.attr('name') + " = " +value);
-                }
-              } else {}
-            } else {
-              errors.err($ths.attr('name') + " Is not defined.");
-            } 
-          } else {
-
-          }
+          });
           
+          $that[0].displayObject(Contrs,contr,O_B_J);
 
         });
 
-        var getElementsByAttribute = function (x, att) {
-          var arr = [], arrCount = -1, i, l, y = x.getElementsByTagName("*"), z = att.toUpperCase();
-          l = y.length;
-          for (i = -1; i < l; i += 1) {
-            if (i == -1) {y[i] = x;}
-            if (y[i].getAttribute(z) !== null) {arrCount += 1; arr[arrCount] = y[i];}
-          }
-          return arr;
-        };  
+      }
 
-        function displayObject(id, data) {
-          var htmlObj, htmlTemplate, html, arr = [], a, l, rowClone, x, j, i, ii, cc, repeat, repeatObj, repeatX = "";
-          htmlObj = $that[0];
-          htmlTemplate = init_template(id, htmlObj);
-          html = htmlTemplate.cloneNode(true);
-          arr = getElementsByAttribute(html, "repeat");
-          l = arr.length;
-          for (j = (l - 1); j >= 0; j -= 1) {
-            cc = arr[j].getAttribute("repeat").split(" ");
-            if (cc.length == 1) {
-              repeat = cc[0];
-            } else {
-              repeatX = cc[0];
-              repeat = cc[2];
-            }
-            arr[j].removeAttribute("repeat");
-            repeatObj = data[repeat];
-            if (repeatObj && typeof repeatObj == "object" && repeatObj.length != "undefined") {
-              i = 0;
-              for (x in repeatObj) {
-                i += 1;
-                rowClone = arr[j];
-                rowClone = replaceCurly(rowClone, "element", repeatX, repeatObj[x]);
-                a = rowClone.attributes;
-                for (ii = 0; ii < a.length; ii += 1) {
-                  a[ii].value = replaceCurly(a[ii], "attribute", repeatX, repeatObj[x]).value;
-                }
-                (i === repeatObj.length) ? arr[j].parentNode.replaceChild(rowClone, arr[j]) : arr[j].parentNode.insertBefore(rowClone, arr[j]);
-              }
-            } else {
-              console.log("repeat must be an array. " + repeat + " is not an array.");
-              continue;
-            }
-          }
-          html = replaceCurly(html, "element");
-          htmlObj.parentNode.replaceChild(html, htmlObj);
-          function init_template(id, obj) {
-            var template;
-            template = obj.cloneNode(true);
-            if (Contrs.hasOwnProperty(id)) {return Contrs[id];}
-            Contrs[id] = template;
-            return template;
-          }
-          function replaceCurly(elmnt, typ, repeatX, x) {
-            var value, substr, match, Obj = data, keyPath, rowClone, pos1, pos2, originalHTML, lookFor, lookForARR = [], i, cc, r;
-            rowClone = elmnt.cloneNode(true);
-            pos1 = 0;
-            while (pos1 > -1) {
-              originalHTML = (typ == "attribute") ? rowClone.value : rowClone.innerHTML;
-              pos1 = originalHTML.indexOf(ct__, pos1);
-              if (pos1 === -1) {break;}
-              pos2 = originalHTML.indexOf(ce__, pos1 + 1);
-              lookFor = originalHTML.substring(pos1 + 2, pos2);
-              lookForARR = lookFor.split("||");
-              value = undefined;
-              Obj = data;
-              for (i = 0; i < lookForARR.length; i += 1) {
-                Obj = data;
-                lookForARR[i] = lookForARR[i].replace(/^\s+|\s+$/gm, ''); //trim
-                if (x) {value = x[lookForARR[i]];}
-                if (value == undefined && data) {value = data[lookForARR[i]];}
-                if (value == undefined) {
-                  Obj = data;
-                  keyPath = lookForARR[i];
-                  substr = keyPath;
-                  if(keyPath.match(/\./)){
-                    Obj = data;
-                    keyPath = keyPath.match(/\./igm);
-                    keyPath.forEach(function(variable1,index){
-                      match = substr.split(variable1);
-                      match.forEach(function(variable,index){
-                        if(index == 0){Obj = data;};
-                        if(variable.match(/\[/igm)){
-                          match = variable.split('[')[1].split(']')[0];
-                          keyPath = variable.replace("["+match+"]",'');
-                          Obj = Obj[keyPath];
-                          Obj = Obj[match] != undefined ? Obj[match] : Obj;
-                        } else {
-                          Obj = Obj[variable];
-                        }
-                        console.log(Obj);
-                      });
-                    });
-                    keyPath = Obj;
-                    value = keyPath;
-                    substr = null;
-                    Obj = data;
-                  } else {}
-                }
-                if (value == undefined) {
-                  if (lookForARR[i] == repeatX) {value = x;}
-                }
-                if (value == undefined) {
-                  if (lookForARR[i].substr(0, 1) == '"') {
-                    value = lookForARR[i].replace(/"/g, "");
-                  } else if (lookForARR[i].substr(0,1) == "'") {
-                    value = lookForARR[i].replace(/'/g, "");
-                  }
-                }
-                if (value != undefined) {break;}
-              }
-              if (value != undefined) {
-                r = ct__ + lookFor + ce__;
-                if (typ == "attribute") {
-                  rowClone.value = rowClone.value.replace(r, value);
-                } else {
-                  replaceHtml(rowClone, r, value);
-                }
-              }
-              pos1 = pos1 + 1;
-              Obj = data;
-            }
-            Obj = data;
-            return rowClone;
-          }
-          function replaceHtml(a, r, result) {
-            var b, l, i, a, x, j;
-            if (a.hasAttributes()) {
-              b = a.attributes;
-              l = b.length;
-              for (i = 0; i < l; i += 1) {
-                if (b[i].value.indexOf(r) > -1) {b[i].value = b[i].value.replace(r, result);}
-              }
-            }
-            x = a.getElementsByTagName("*");
-            l = x.length;
-            a.innerHTML = a.innerHTML.replace(r, typeof result == "object" ? JT(result) : result);
+      OutPutController();
+
+      function getController(ctrl){
+        var __proto = {
+          controller: ctrl,
+          reload: function(){
+            OutPutController();
+          },
+          el: $('manager-module[module="'+ctrl+'"],[manager-module="'+ctrl+'"]'),
+          object: O_B_J,
+          parentObject: objs,
+          parentController: self,
+          self: self.__proto__,
+        },__proto_real = function ManagerController(){
+          for (var i in __proto){
+            this[i] = __proto[i];
           }
         };
 
-        displayObject(contr,O_B_J);
+        return new __proto_real();
+      }
 
-      });
-    
+      self.__proto__.getController = getController;
+
+      return {
+        objs: O_B_J,
+        reload: OutPutController
+      }
     },
-
+    
   }
 
 
@@ -1569,41 +1767,36 @@
     },
 
     getJson: function (file, func) {
-      var that = this;
+      var that = this,JsonObject;
       that.open(file, function () {
         if (this.readyState == 4 && this.status == 200) {
           func(JSON.parse(this.responseText));
+          JsonObject = JSON.parse(this.responseText);
         } else if(this.status == 404){
           errors.err404(file);
         } else {}
       });
+      return JsonObject;
     },
 
     getXml: function (file, func) {
-      var that = this;
+      var that = this,XMLDoc;
       that.open(file, function () {
         if (this.readyState == 4 && this.status == 200) {
           func(this.responseXML);
+          XMLDoc = this.responseXML;
         } else if(this.status == 404){
           errors.err404(file);
         } else {}
       });
+
+      return XMLDoc;
     },
 
     http: XMLHttpRequest,
 
     ajax: $.ajax,
   }
-
-  $('manager-include[file]').each(function(){
-    var $ths = $(this),
-        $file = $ths.attr('file'),
-        $http = new http(),$content;
-
-    $content = $http.get($file);
-
-    $ths.html($content);
-  });
 
   /*
  * May 2015
@@ -1686,6 +1879,7 @@
   browserWindow.prototype = {
     onpageshow: function(){},
     onpagehide: function(){},
+    
   }
 
   function claculator(){
@@ -1728,6 +1922,7 @@
         return numbered
       }
     },
+    
   }
 
   function ifrCtrl(el,url){
@@ -1842,6 +2037,9 @@
         return Number(ifrw.width);
       }
     },
+    __proto__: function IframeController(){
+      return this;
+    }
   }
 
 
@@ -1978,850 +2176,494 @@
 
       return tr;
     },
+    fileChooser: function(onchange,readAs,options){
 
-  }
+      var settings = $.extend({
+        name: null,
+        multiple: false,
+        accepts: false
+      },options),_readAs;
 
+      if(!onchange) return false;
+      if(!readAs) return false;
 
-
-
-  function toColorObject(color) {
-    var x, y, typ, arr = [], c = String(color), arrlength, i, opacity, match, a, hue, sat, rgb, colornames = [], colorhexs = [];
-    
-    c = ColorTrim(c.toLowerCase());
-    x = c.substr(0,1).toUpperCase();
-    y = c.substr(1);
-    a = 1;
-    if ((x == "R" || x == "Y" || x == "G" || x == "C" || x == "B" || x == "M" || x == "W") && !isNaN(y)) {
-      if (c.length == 6 && c.indexOf(",") == -1) {
+      if(readAs == "text"){
+        _readAs = "readAsText";
+      } else if(readAs == "data"){
+        _readAs = "readAsDataURL";
+      } else if(readAs == "arrayBuffer"){
+        _readAs = "readAsArrayBuffer";
       } else {
-        c = "ncol(" + c + ")";
+        errors.err(readAs + " is not defined. try: text,data or arrayBuffer");
+        return false;
       }
-    }
-    if (c.length != 3 && c.length != 6 && !isNaN(c)) {c = "ncol(" + c + ")";}
-    if (c.indexOf(",") > 0 && c.indexOf("(") == -1) {c = "ncol(" + c + ")";}  
-    if (c.substr(0, 3) == "rgb" || c.substr(0, 3) == "hsl" || c.substr(0, 3) == "hwb" || c.substr(0, 4) == "ncol" || c.substr(0, 4) == "cmyk") {
-      if (c.substr(0, 4) == "ncol") {
-        if (c.split(",").length == 4 && c.indexOf("ncola") == -1) {
-          c = c.replace("ncol", "ncola");
+
+      var fileChooser = $("<input />",{
+        'type': "file",
+      });
+
+      if(settings.multiple == true){
+        fileChooser.attr("multiple","true");
+      } else {}
+      if(settings.accepts != null && settings.accepts != false){
+        fileChooser.attr("accept",accepts);
+      } else {}
+
+      fileChooser.on("change",function(event){
+        let files = event.target.files;
+        if (!files || !files.length) {
+          return false;
         }
-        typ = "ncol";
-        c = c.substr(4);
-      } else if (c.substr(0, 4) == "cmyk") {
-        typ = "cmyk";
-        c = c.substr(4);
-      } else {
-        typ = c.substr(0, 3);
-        c = c.substr(3);
-      }
-      arrlength = 3;
-      opacity = false;
-      if (c.substr(0, 1).toLowerCase() == "a") {
-        arrlength = 4;
-        opacity = true;
-        c = c.substr(1);
-      } else if (typ == "cmyk") {
-        arrlength = 4;
-        if (c.split(",").length == 5) {
-          arrlength = 5;
-          opacity = true;
-        }
-      }
-      c = c.replace("(", "");
-      c = c.replace(")", "");
-      arr = c.split(",");
-      if (typ == "rgb") {
-        if (arr.length != arrlength) {
-          return emptyObject();
-        }
-        for (i = 0; i < arrlength; i++) {
-          if (arr[i] == "" || arr[i] == " ") {arr[i] = "0"; }
-          if (arr[i].indexOf("%") > -1) {
-            arr[i] = arr[i].replace("%", "");
-            arr[i] = Number(arr[i] / 100);
-            if (i < 3 ) {arr[i] = Math.round(arr[i] * 255);}
+
+        files = toArray(files);
+
+        files.forEach(function(file,index){
+          let reader = new FileReader()
+          reader.onload = (evt) => {
+            try {
+              onchange(evt,event,fileChooser);
+            } catch (e) {
+              errors.err(e);
+            }
           }
-          if (isNaN(arr[i])) {return emptyObject(); }
-          if (parseInt(arr[i]) > 255) {arr[i] = 255; }
-          if (i < 3) {arr[i] = parseInt(arr[i]);}
-          if (i == 3 && Number(arr[i]) > 1) {arr[i] = 1;}
-        }
-        rgb = {r : arr[0], g : arr[1], b : arr[2]};
-        if (opacity == true) {a = Number(arr[3]);}
-      }
-      if (typ == "hsl" || typ == "hwb" || typ == "ncol") {
-        while (arr.length < arrlength) {arr.push("0"); }
-        if (typ == "hsl" || typ == "hwb") {
-          if (parseInt(arr[0]) >= 360) {arr[0] = 0; }
-        }
-        for (i = 1; i < arrlength; i++) {
-          if (arr[i].indexOf("%") > -1) {
-            arr[i] = arr[i].replace("%", "");
-            arr[i] = Number(arr[i]);
-            if (isNaN(arr[i])) {return emptyObject(); }
-            arr[i] = arr[i] / 100;
-          } else {
-            arr[i] = Number(arr[i]);
-          }
-          if (Number(arr[i]) > 1) {arr[i] = 1;}
-          if (Number(arr[i]) < 0) {arr[i] = 0;}
-        }
-        if (typ == "hsl") {rgb = hslToRgb(arr[0], arr[1], arr[2]); hue = Number(arr[0]); sat = Number(arr[1]);}
-        if (typ == "hwb") {rgb = hwbToRgb(arr[0], arr[1], arr[2]);}
-        if (typ == "ncol") {rgb = ncolToRgb(arr[0], arr[1], arr[2]);}
-        if (opacity == true) {a = Number(arr[3]);}
-      }
-      if (typ == "cmyk") {
-        while (arr.length < arrlength) {arr.push("0"); }
-        for (i = 0; i < arrlength; i++) {
-          if (arr[i].indexOf("%") > -1) {
-            arr[i] = arr[i].replace("%", "");
-            arr[i] = Number(arr[i]);
-            if (isNaN(arr[i])) {return emptyObject(); }
-            arr[i] = arr[i] / 100;
-          } else {
-            arr[i] = Number(arr[i]);
-          }
-          if (Number(arr[i]) > 1) {arr[i] = 1;}
-          if (Number(arr[i]) < 0) {arr[i] = 0;}
-        }
-        rgb = cmykToRgb(arr[0], arr[1], arr[2], arr[3]);
-        if (opacity == true) {a = Number(arr[4]);}
-      }
-    } else if (c.substr(0, 3) == "ncs") {
-      rgb = ncsToRgb(c);
-    } else {
-      match = false;
-      colornames = getColorArr('names');
-      for (i = 0; i < colornames.length; i++) {
-        if (c.toLowerCase() == colornames[i].toLowerCase()) {
-          colorhexs = getColorArr('hexs');
-          match = true;
-          rgb = {
-            r : parseInt(colorhexs[i].substr(0,2), 16),
-            g : parseInt(colorhexs[i].substr(2,2), 16),
-            b : parseInt(colorhexs[i].substr(4,2), 16)
-          };
-          break;
-        }
-      }
-      if (match == false) {
-        c = c.replace("#", "");
-        if (c.length == 3) {c = c.substr(0,1) + c.substr(0,1) + c.substr(1,1) + c.substr(1,1) + c.substr(2,1) + c.substr(2,1);}
-        for (i = 0; i < c.length; i++) {
-          if (!isHex(c.substr(i, 1))) {return emptyObject(); }
-        }
-        arr[0] = parseInt(c.substr(0,2), 16);
-        arr[1] = parseInt(c.substr(2,2), 16);
-        arr[2] = parseInt(c.substr(4,2), 16);
-        for (i = 0; i < 3; i++) {
-          if (isNaN(arr[i])) {return emptyObject(); }
-        }
-        rgb = {
-          r : arr[0],
-          g : arr[1],
-          b : arr[2]
-        };
-      }
+          reader[_readAs](file)
+        });
+      });
+
+      fileChooser.click();
+
+      return fileChooser;
+    },
+    __proto__: function ManagerComponent(){
+      return this;
     }
-    return colorObject(rgb, a, hue, sat);
   }
-  function colorObject(rgb, a, h, s) {
-    var hsl, hwb, cmyk, ncol, color, hue, sat;
-    if (!rgb) {return emptyObject();}
-    if (!a) {a = 1;}
-    hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-    hwb = rgbToHwb(rgb.r, rgb.g, rgb.b);
-    cmyk = rgbToCmyk(rgb.r, rgb.g, rgb.b);
-    hue = (h || hsl.h);
-    sat = (s || hsl.s);   
-    ncol = hueToNcol(hue);
-    color = {
-      red : rgb.r,
-      green : rgb.g,
-      blue : rgb.b,
-      hue : hue,
-      sat : sat,
-      lightness : hsl.l,
-      whiteness : hwb.w,
-      blackness : hwb.b,
-      cyan : cmyk.c,
-      magenta : cmyk.m,
-      yellow : cmyk.y,
-      black : cmyk.k,
-      ncol : ncol,
-      opacity : a,
-      valid : true
-    };
-    color = roundDecimals(color);
-    return color;
-  }
-  function emptyObject() {
-    return {
-      red : 0,
-      green : 0,
-      blue : 0,
-      hue : 0,
-      sat : 0,
-      lightness : 0,
-      whiteness : 0,
-      blackness : 0,
-      cyan : 0,
-      magenta : 0,
-      yellow : 0,
-      black : 0,
-      ncol : "R",
-      opacity : 1,
-      valid : false
-    };
-  }
-  function getColorArr(x) {
-    if (x == "names") {return ['AliceBlue','AntiqueWhite','Aqua','Aquamarine','Azure','Beige','Bisque','Black','BlanchedAlmond','Blue','BlueViolet','Brown','BurlyWood','CadetBlue','Chartreuse','Chocolate','Coral','CornflowerBlue','Cornsilk','Crimson','Cyan','DarkBlue','DarkCyan','DarkGoldenRod','DarkGray','DarkGrey','DarkGreen','DarkKhaki','DarkMagenta','DarkOliveGreen','DarkOrange','DarkOrchid','DarkRed','DarkSalmon','DarkSeaGreen','DarkSlateBlue','DarkSlateGray','DarkSlateGrey','DarkTurquoise','DarkViolet','DeepPink','DeepSkyBlue','DimGray','DimGrey','DodgerBlue','FireBrick','FloralWhite','ForestGreen','Fuchsia','Gainsboro','GhostWhite','Gold','GoldenRod','Gray','Grey','Green','GreenYellow','HoneyDew','HotPink','IndianRed','Indigo','Ivory','Khaki','Lavender','LavenderBlush','LawnGreen','LemonChiffon','LightBlue','LightCoral','LightCyan','LightGoldenRodYellow','LightGray','LightGrey','LightGreen','LightPink','LightSalmon','LightSeaGreen','LightSkyBlue','LightSlateGray','LightSlateGrey','LightSteelBlue','LightYellow','Lime','LimeGreen','Linen','Magenta','Maroon','MediumAquaMarine','MediumBlue','MediumOrchid','MediumPurple','MediumSeaGreen','MediumSlateBlue','MediumSpringGreen','MediumTurquoise','MediumVioletRed','MidnightBlue','MintCream','MistyRose','Moccasin','NavajoWhite','Navy','OldLace','Olive','OliveDrab','Orange','OrangeRed','Orchid','PaleGoldenRod','PaleGreen','PaleTurquoise','PaleVioletRed','PapayaWhip','PeachPuff','Peru','Pink','Plum','PowderBlue','Purple','RebeccaPurple','Red','RosyBrown','RoyalBlue','SaddleBrown','Salmon','SandyBrown','SeaGreen','SeaShell','Sienna','Silver','SkyBlue','SlateBlue','SlateGray','SlateGrey','Snow','SpringGreen','SteelBlue','Tan','Teal','Thistle','Tomato','Turquoise','Violet','Wheat','White','WhiteSmoke','Yellow','YellowGreen']; }
-    if (x == "hexs") {return ['f0f8ff','faebd7','00ffff','7fffd4','f0ffff','f5f5dc','ffe4c4','000000','ffebcd','0000ff','8a2be2','a52a2a','deb887','5f9ea0','7fff00','d2691e','ff7f50','6495ed','fff8dc','dc143c','00ffff','00008b','008b8b','b8860b','a9a9a9','a9a9a9','006400','bdb76b','8b008b','556b2f','ff8c00','9932cc','8b0000','e9967a','8fbc8f','483d8b','2f4f4f','2f4f4f','00ced1','9400d3','ff1493','00bfff','696969','696969','1e90ff','b22222','fffaf0','228b22','ff00ff','dcdcdc','f8f8ff','ffd700','daa520','808080','808080','008000','adff2f','f0fff0','ff69b4','cd5c5c','4b0082','fffff0','f0e68c','e6e6fa','fff0f5','7cfc00','fffacd','add8e6','f08080','e0ffff','fafad2','d3d3d3','d3d3d3','90ee90','ffb6c1','ffa07a','20b2aa','87cefa','778899','778899','b0c4de','ffffe0','00ff00','32cd32','faf0e6','ff00ff','800000','66cdaa','0000cd','ba55d3','9370db','3cb371','7b68ee','00fa9a','48d1cc','c71585','191970','f5fffa','ffe4e1','ffe4b5','ffdead','000080','fdf5e6','808000','6b8e23','ffa500','ff4500','da70d6','eee8aa','98fb98','afeeee','db7093','ffefd5','ffdab9','cd853f','ffc0cb','dda0dd','b0e0e6','800080','663399','ff0000','bc8f8f','4169e1','8b4513','fa8072','f4a460','2e8b57','fff5ee','a0522d','c0c0c0','87ceeb','6a5acd','708090','708090','fffafa','00ff7f','4682b4','d2b48c','008080','d8bfd8','ff6347','40e0d0','ee82ee','f5deb3','ffffff','f5f5f5','ffff00','9acd32']; }
-  }
-  function roundDecimals(c) {
-    c.red = Number(c.red.toFixed(0));
-    c.green = Number(c.green.toFixed(0));
-    c.blue = Number(c.blue.toFixed(0));
-    c.hue = Number(c.hue.toFixed(0));
-    c.sat = Number(c.sat.toFixed(2));
-    c.lightness = Number(c.lightness.toFixed(2));
-    c.whiteness = Number(c.whiteness.toFixed(2));
-    c.blackness = Number(c.blackness.toFixed(2));
-    c.cyan = Number(c.cyan.toFixed(2));  
-    c.magenta = Number(c.magenta.toFixed(2));
-    c.yellow = Number(c.yellow.toFixed(2));
-    c.black = Number(c.black.toFixed(2));
-    c.ncol = c.ncol.substr(0, 1) + Math.round(Number(c.ncol.substr(1)));
-    c.opacity = Number(c.opacity.toFixed(2));
-    return c;
-  }
-  function hslToRgb(hue, sat, light) {
-    var t1, t2, r, g, b;
-    hue = hue / 60;
-    if ( light <= 0.5 ) {
-      t2 = light * (sat + 1);
-    } else {
-      t2 = light + sat - (light * sat);
+
+
+
+
+  function Version (version) {
+      this.original = null;
+      this.major = null;
+      this.minor = null;
+      this.build = null;
+      this.revision = null;
+      this.initialize(version);
+  };
+  Version.prototype.initialize = function (version) {
+    var arr = version.split('.');
+    this.original = version;
+    this.major = (arr && arr[0]) ? parseInt(arr[0], 10) : null;
+    this.minor = (arr && arr[1]) ? parseInt(arr[1], 10) : null;
+    this.build = (arr && arr[2]) ? parseInt(arr[2], 10) : null;
+    this.revision = (arr && arr[3]) ? parseInt(arr[3], 10) : null;
+  };
+  Version.prototype.isEqual = function (major, minor, build, revision) {
+    if (typeof major !== 'number') {
+        return false;
     }
-    t1 = light * 2 - t2;
-    r = hueToRgb(t1, t2, hue + 2) * 255;
-    g = hueToRgb(t1, t2, hue) * 255;
-    b = hueToRgb(t1, t2, hue - 2) * 255;
-    return {r : r, g : g, b : b};
-  }
-  function hueToRgb(t1, t2, hue) {
-    if (hue < 0) hue += 6;
-    if (hue >= 6) hue -= 6;
-    if (hue < 1) return (t2 - t1) * hue + t1;
-    else if(hue < 3) return t2;
-    else if(hue < 4) return (t2 - t1) * (4 - hue) + t1;
-    else return t1;
-  }
-  function hwbToRgb(hue, white, black) {
-    var i, rgb, rgbArr = [], tot;
-    rgb = hslToRgb(hue, 1, 0.50);
-    rgbArr[0] = rgb.r / 255;
-    rgbArr[1] = rgb.g / 255;
-    rgbArr[2] = rgb.b / 255;
-    tot = white + black;
-    if (tot > 1) {
-      white = Number((white / tot).toFixed(2));
-      black = Number((black / tot).toFixed(2));
+    if (typeof minor !== 'number') {
+        return (this.major === major);
     }
-    for (i = 0; i < 3; i++) {
-      rgbArr[i] *= (1 - (white) - (black));
-      rgbArr[i] += (white);
-      rgbArr[i] = Number(rgbArr[i] * 255);
+    if (typeof build !== 'number') {
+        return (this.major === major && this.minor === minor);
     }
-    return {r : rgbArr[0], g : rgbArr[1], b : rgbArr[2] };
-  }
-  function cmykToRgb(c, m, y, k) {
-    var r, g, b;
-    r = 255 - ((Math.min(1, c * (1 - k) + k)) * 255);
-    g = 255 - ((Math.min(1, m * (1 - k) + k)) * 255);
-    b = 255 - ((Math.min(1, y * (1 - k) + k)) * 255);
-    return {r : r, g : g, b : b};
-  }
-  function ncolToRgb(ncol, white, black) {
-    var letter, percent, h, w, b;
-    h = ncol;
-    if (isNaN(ncol.substr(0,1))) {
-      letter = ncol.substr(0,1).toUpperCase();
-      percent = ncol.substr(1);
-      if (percent == "") {percent = 0;}
-      percent = Number(percent);
-      if (isNaN(percent)) {return false;}
-      if (letter == "R") {h = 0 + (percent * 0.6);}
-      if (letter == "Y") {h = 60 + (percent * 0.6);}
-      if (letter == "G") {h = 120 + (percent * 0.6);}
-      if (letter == "C") {h = 180 + (percent * 0.6);}
-      if (letter == "B") {h = 240 + (percent * 0.6);}
-      if (letter == "M") {h = 300 + (percent * 0.6);}
-      if (letter == "W") {
-        h = 0;
-        white = 1 - (percent / 100);
-        black = (percent / 100);
-      }
+    if (typeof revision !== 'number') {
+        return (this.major === major && this.minor === minor && this.build === build);
     }
-    return hwbToRgb(h, white, black);
-  }
-  function hueToNcol(hue) {
-    while (hue >= 360) {
-      hue = hue - 360;
+    return (this.major === major && this.minor === minor &&
+            this.build === build && this.revision === revision);
+  };
+  Version.prototype.isOrLess = function (major, minor, build, revision) {
+    if (typeof major !== 'number') {
+        return false;
     }
-    if (hue < 60) {return "R" + (hue / 0.6); }
-    if (hue < 120) {return "Y" + ((hue - 60) / 0.6); }
-    if (hue < 180) {return "G" + ((hue - 120) / 0.6); }
-    if (hue < 240) {return "C" + ((hue - 180) / 0.6); }
-    if (hue < 300) {return "B" + ((hue - 240) / 0.6); }
-    if (hue < 360) {return "M" + ((hue - 300) / 0.6); }
-  }
-  function ncsToRgb(ncs){
-    var black, chroma, bc, percent, black1, chroma1, red1, factor1, blue1, red1, red2, green2, blue2, max, factor2, grey, r, g, b; 
-    ncs = ColorTrim(ncs).toUpperCase();
-    ncs = ncs.replace("(", "");
-    ncs = ncs.replace(")", "");
-    ncs = ncs.replace("NCS", "NCS ");
-    ncs = ncs.replace(/  /g, " ");  
-    if (ncs.indexOf("NCS") == -1) {ncs = "NCS " + ncs;}
-    ncs = ncs.match(/^(?:NCS|NCS\sS)\s(\d{2})(\d{2})-(N|[A-Z])(\d{2})?([A-Z])?$/);
-    if (ncs === null) return false;
-    black = parseInt(ncs[1], 10);
-    chroma = parseInt(ncs[2], 10);
-    bc = ncs[3];
-    if (bc != "N" && bc != "Y" && bc != "R" && bc != "B" && bc != "G") {return false;}
-    percent = parseInt(ncs[4], 10) || 0;
-    if (bc !== 'N') {
-      black1 = (1.05 * black - 5.25);
-      chroma1 = chroma;
-      if (bc === 'Y' && percent <= 60) {
-        red1 = 1;
-      } else if (( bc === 'Y' && percent > 60) || ( bc === 'R' && percent <= 80)) {
-        if (bc === 'Y') {
-          factor1 = percent - 60;
+    if (this.major !== major) {
+        return (this.major < major);
+    }
+    if (typeof minor !== 'number') {
+        return true;
+    }
+    if (this.minor !== minor) {
+        return (this.minor < minor);
+    }
+    if (typeof build !== 'number') {
+        return true;
+    }
+    if (this.build !== build) {
+        return (this.build < build);
+    }
+    if (typeof revision !== 'number') {
+        return true;
+    }
+    if (this.revision !== revision) {
+        return (this.revision < revision);
+    }
+    return true;
+  };
+  Version.prototype.isLessThan = function (major, minor, build, revision) {
+    if (typeof major !== 'number') {
+        return false;
+    }
+    if (this.major !== major) {
+        return (this.major < major);
+    }
+    if (typeof minor !== 'number') {
+        return false;
+    }
+    if (this.minor !== minor) {
+        return (this.minor < minor);
+    }
+    if (typeof build !== 'number') {
+        return false;
+    }
+    if (this.build !== build) {
+        return (this.build < build);
+    }
+    if (typeof revision !== 'number') {
+        return false;
+    }
+    if (this.revision !== revision) {
+        return (this.revision < revision);
+    }
+    return false;
+  };
+  Version.prototype.isOrMore = function (major, minor, build, revision) {
+    if (typeof major !== 'number') {
+        return false;
+    }
+    if (this.major !== major) {
+        return (this.major > major);
+    }
+    if (typeof minor !== 'number') {
+        return true;
+    }
+    if (this.minor !== minor) {
+        return (this.minor > minor);
+    }
+    if (typeof build !== 'number') {
+        return true;
+    }
+    if (this.build !== build) {
+        return (this.build > build);
+    }
+    if (typeof revision !== 'number') {
+        return true;
+    }
+    if (this.revision !== revision) {
+        return (this.revision > revision);
+    }
+    return true;
+  };
+  Version.prototype.isMoreThan = function (major, minor, build, revision) {
+    if (typeof major !== 'number') {
+        return false;
+    }
+    if (this.major !== major) {
+        return (this.major > major);
+    }
+    if (typeof minor !== 'number') {
+        return false;
+    }
+    if (this.minor !== minor) {
+        return (this.minor > minor);
+    }
+    if (typeof build !== 'number') {
+        return false;
+    }
+    if (this.build !== build) {
+        return (this.build > build);
+    }
+    if (typeof revision !== 'number') {
+        return false;
+    }
+    if (this.revision !== revision) {
+        return (this.revision > revision);
+    }
+    return false;
+  };
+  Version.prototype.toString = function () {
+      return this.original;
+  };
+  function BrowserInfo(){
+    this.original = '';
+    this.version = null;
+    this.initialize(window.navigator.userAgent);
+
+  };
+  BrowserInfo.prototype.initialize = function (userAgent) {
+    var array;
+    var browser = '';
+    var engine = '';
+    var architecture = '';
+    var version = null;
+    userAgent = userAgent.toLowerCase();
+
+    if (userAgent.indexOf('opera') >= 0 || userAgent.lastIndexOf('opr') >= 0) {
+        if (userAgent.indexOf('opera mini') >= 0) {
+            browser = 'operamini';
+            array = /opera mini\/([\d\.]+)/.exec(userAgent);
+            version = (array) ? array[1] : '';
+        } else if (userAgent.indexOf('opera mobi') >= 0) {
+            browser = 'operamobile';
+            array = /version\/([\d\.]+)/.exec(userAgent);
+            version = (array) ? array[1] : '';
         } else {
-          factor1 = percent + 40;
+            browser = 'opera';
+            array = /version\/([\d\.]+)/.exec(userAgent);
+            if (array) {
+                version = array[1];
+            } else{
+                array = /(?:opera|opr)[\s\/]+([\d\.]+)/.exec(userAgent);
+                version = (array) ? array[1] : '';
+            }
         }
-        red1 = ((Math.sqrt(14884 - Math.pow(factor1, 2))) - 22) / 100;
-      } else if ((bc === 'R' && percent > 80) || (bc === 'B')) {
-        red1 = 0;
-      } else if (bc === 'G') {
-        factor1 = (percent - 170);
-        red1 = ((Math.sqrt(33800 - Math.pow(factor1, 2))) - 70) / 100;
-      }
-      if (bc === 'Y' && percent <= 80) {
-        blue1 = 0;
-      } else if (( bc === 'Y' && percent > 80) || ( bc === 'R' && percent <= 60)) {
-        if (bc ==='Y') {
-          factor1 = (percent - 80) + 20.5;
+    } else if (userAgent.indexOf('edge') >= 0 || userAgent.indexOf('edg') >= 0) {
+        browser = 'edge';
+        array = /(edge|edg)\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[2] : '';
+    } else if (userAgent.indexOf('msie') >= 0 || userAgent.indexOf('trident') >= 0) {
+        browser = 'msie';
+        array = /(msie|rv:?)\s?([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[2] : '';
+    } else if (userAgent.indexOf('firefox') >= 0) {
+        browser = 'firefox';
+        array = /firefox\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else if (userAgent.indexOf('chrome') >= 0 || userAgent.indexOf('crios') >= 0) {
+        browser = 'chrome';
+        array = /[chrome|crios]\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else if (userAgent.indexOf('android') >= 0) {
+        browser = 'browser';
+        array = /version\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else if (userAgent.indexOf('silk') >= 0) {
+        browser = 'silk';
+        array = /silk\/([\d\.]*)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else if (userAgent.indexOf('mercury') >= 0) {
+        browser = 'mercury';
+        array = /mercury\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else if (userAgent.indexOf('safari') >= 0) {
+        browser = 'safari';
+        array = /version\/([\d\.]+)/.exec(userAgent);
+        version = (array) ? array[1] : '';
+    } else {
+        browser = 'unknown';
+        version = '';
+    }
+
+    if (userAgent.indexOf('edge') >= 0) {
+        engine = 'edge';
+    } else if (userAgent.indexOf('webkit') >= 0) {
+        engine = 'webkit';
+    } else  if (userAgent.indexOf('trident') >= 0) {
+        engine = 'trident';
+    } else if (userAgent.indexOf('presto') >= 0) {
+        engine = 'presto';
+    } else if (userAgent.indexOf('khtml') >= 0) {
+        engine = 'khtml';
+    } else if (userAgent.indexOf('gecko') >= 0) {
+        engine = 'gecko';
+    } else {
+        engine = 'unknown';
+    }
+
+    if (userAgent.indexOf('arm') >= 0) {
+        architecture = 'arm';
+    } else if (userAgent.indexOf('win64') >= 0) {
+        if (userAgent.indexOf('ia64') >= 0) {
+            architecture = 'ia64';
         } else {
-          factor1 = (percent + 20) + 20.5;
+            architecture = 'x64';
         }
-        blue1 = (104 - (Math.sqrt(11236 - Math.pow(factor1, 2)))) / 100;
-      } else if ((bc === 'R' && percent > 60) || ( bc === 'B' && percent <= 80)) {
-        if (bc ==='R') {
-          factor1 = (percent - 60) - 60;
+    } else {
+        architecture = 'x86';
+    }
+
+    this.original = browser;
+    this[browser] = true;
+    this[engine] = true;
+    this[architecture] = true;
+    this.version = (!window.__BACKWARD_COMPATIBILITY_ENABLED) ? new Version(version) : version;
+
+  };
+
+  BrowserInfo.prototype.is = function (type) {
+
+      return (typeof type === 'string') && (type.toLowerCase() === this.original);
+
+  };
+
+  function PlatformInfo() {
+    this.original = '';
+    this.initialize(window.navigator.userAgent);
+
+  };
+
+  PlatformInfo.prototype.initialize = function (userAgent) {
+    var type = '';
+    var platform = '';
+    var architecture = '';
+    var version = '';
+    var result = null;
+    var mobile = /iphone|ipod|ipad|android|windows phone|silk|blackberry|symbian|mobile/;
+    var pc = /windows|mac|linux/;
+    var array;
+    userAgent = userAgent.toLowerCase();
+
+    result = mobile.exec(userAgent);
+    if (result) {
+        if (userAgent.indexOf('silk') >= 0) {
+            type = 'tablet';
+            platform = 'android';
         } else {
-          factor1 = (percent + 40) - 60;
+            if ((userAgent.indexOf('android') >= 0 && userAgent.indexOf('mobile') < 0) ||
+                (userAgent.indexOf('ipad') >= 0)) {
+                type = 'tablet';
+            } else {
+              type = 'mobile';
+            }
+            platform = result[0].replace(' ', '');
         }
-        blue1 = ((Math.sqrt(10000 - Math.pow(factor1, 2))) - 10) / 100;
-      } else if (( bc === 'B' && percent > 80) || ( bc === 'G' && percent <= 40)) {
-        if (bc === 'B') {
-          factor1 = (percent - 80) - 131;
+    } else {
+        if (userAgent.indexOf('windows') >= 0) {
+            type = 'pc';
+            platform = 'windows';
+            array = /windows nt ([\d\.]+)/.exec(userAgent);
+            version = (array) ? array[1] : '';
+            if (userAgent.indexOf('arm') >= 0) {
+                architecture = 'arm';
+            } else if (userAgent.indexOf('win64') >= 0) {
+                if (userAgent.indexOf('ia64') >= 0) {
+                    architecture = 'ia64';
+                } else {
+                    architecture = 'x64';
+                }
+            } else if (userAgent.indexOf('wow64') >= 0) {
+                architecture = 'x64';
+            } else {
+                architecture = 'x86';
+            }
+        } else if (userAgent.indexOf('mac') >= 0) {
+            type = 'pc';
+            platform = 'mac';
+            architecture = 'unknown';
+        } else if (userAgent.indexOf('linux') >= 0) {
+            type = 'pc';
+            platform = 'linux';
+            architecture = 'unknown';
         } else {
-          factor1 = (percent + 20) - 131;
+            type = 'unknown';
+            platform = 'unknown';
+            architecture = 'unknown';
         }
-        blue1 = (122 - (Math.sqrt(19881 - Math.pow(factor1, 2)))) / 100;
-      } else if (bc === 'G' && percent > 40) {
-        blue1 = 0;
-      }
-      if (bc === 'Y') {
-        green1 = (85 - 17/20 * percent) / 100;
-      } else if (bc === 'R' && percent <= 60) {
-        green1 = 0;
-      } else if (bc === 'R' && percent > 60) {
-        factor1 = (percent - 60) + 35;
-        green1 = (67.5 - (Math.sqrt(5776 - Math.pow(factor1, 2)))) / 100;
-      } else if (bc === 'B' && percent <= 60) {
-        factor1 = (1*percent - 68.5);
-        green1 = (6.5 + (Math.sqrt(7044.5 - Math.pow(factor1, 2)))) / 100;
-      } else if ((bc === 'B' && percent > 60) || ( bc === 'G' && percent <= 60)) {
-        green1 = 0.9;
-      } else if (bc === 'G' && percent > 60) {
-        factor1 = (percent - 60);
-        green1 = (90 - (1/8 * factor1)) / 100;
-      }
-      factor1 = (red1 + green1 + blue1)/3;
-      red2 = ((factor1 - red1) * (100 - chroma1) / 100) + red1;
-      green2 = ((factor1 - green1) * (100 - chroma1) / 100) + green1;
-      blue2 = ((factor1 - blue1) * (100 - chroma1) / 100) + blue1;
-      if (red2 > green2 && red2 > blue2) {
-        max = red2;
-      } else if (green2 > red2 && green2 > blue2) {
-        max = green2;
-      } else if (blue2 > red2 && blue2 > green2) {
-        max = blue2;
-      } else {
-        max = (red2 + green2 + blue2) / 3;
-      }
-      factor2 = 1 / max;
-      r = parseInt((red2 * factor2 * (100 - black1) / 100) * 255, 10);
-      g = parseInt((green2 * factor2 * (100 - black1) / 100) * 255, 10);
-      b = parseInt((blue2 * factor2 * (100 - black1) / 100) * 255, 10);
-      if (r > 255) {r = 255;}
-      if (g > 255) {g = 255;}
-      if (b > 255) {b = 255;}
-      if (r < 0) {r = 0;}
-      if (g < 0) {g = 0;}
-      if (b < 0) {b = 0;}
+    }
+    this.type = type;
+    this.original = platform;
+    this[type] = true;
+    this[platform] = true;
+    this[architecture] = true;
+    this.version = new Version(version);
+  };
+
+  PlatformInfo.prototype.is = function (name) {
+    if (typeof name === 'string') {
+        name = name.toLowerCase();
+        return ((name === this.original) || (name === this.type));
     } else {
-      grey = parseInt((1 - black / 100) * 255, 10);
-      if (grey > 255) {grey = 255;}
-      if (grey < 0) {grey = 0;}
-      r = grey;
-      g = grey;
-      b = grey;
+        return false;
     }
-    return {
-      r : r,
-      g : g,
-      b : b
-    };
-  }
-  function rgbToHsl(r, g, b) {
-    var min, max, i, l, s, maxcolor, h, rgb = [];
-    rgb[0] = r / 255;
-    rgb[1] = g / 255;
-    rgb[2] = b / 255;
-    min = rgb[0];
-    max = rgb[0];
-    maxcolor = 0;
-    for (i = 0; i < rgb.length - 1; i++) {
-      if (rgb[i + 1] <= min) {min = rgb[i + 1];}
-      if (rgb[i + 1] >= max) {max = rgb[i + 1];maxcolor = i + 1;}
+  };
+
+
+
+
+
+
+
+
+
+  function browserInfo(){
+    var Browser = new BrowserInfo(),
+    Platform = new PlatformInfo();
+
+    return{
+      browser: Browser.original,
+      version: Browser.version.original,
+      build: Browser.version.build,
+      platform: Platform.original,
+      isBrowser: Browser.is,
+      isPlatform: Platform.is,
+      isVersion: Browser.version,
+      __proto__: BrowserInfo,
     }
-    if (maxcolor == 0) {
-      h = (rgb[1] - rgb[2]) / (max - min);
+  }
+
+  function ManagerOn(el){
+    var $el = $(el),
+        elem = $el[0],
+    Props =  {
+      "hold": function (callback,options){
+        var settings = $.extend({
+          time:5000,
+          click:'all'
+        },options);
+        
+        return $el.each(function(){
+          var $this = $(this);
+          $this.onHold_callback = callback;
+          $this.data('onHold_selected',false);
+          $this.mousedown(function(ev){
+            var valid = false;
+            switch(settings.click)
+            {
+            case 'left':
+              if(ev.button == 0) valid = true;
+              break;
+            case 'right':
+              if(ev.button == 2) valid = true;
+              break;
+            case 'middle':
+              if(ev.button == 1) valid = true;
+              break;
+            case 'left_right':
+              if(ev.button == 0 || ev.button == 2) valid = true;
+              break;
+            case 'all':
+              valid = true;
+              break;
+            }
+            
+            if(valid)
+            {
+              $this.data('onHold_selected',true);
+              
+              setTimeout(function(){
+                  if($this.data('onHold_selected')){
+                    $this.onHold_callback(ev);
+                  }},settings.time);
+
+              $this.mouseup(function(ev){
+                $this.data('onHold_selected',false);
+              });
+            }
+          });
+        }); 
+
+        return Props;
+      },
+
     }
-    if (maxcolor == 1) {
-      h = 2 + (rgb[2] - rgb[0]) / (max - min);
-    }
-    if (maxcolor == 2) {
-      h = 4 + (rgb[0] - rgb[1]) / (max - min);
-    }
-    if (isNaN(h)) {h = 0;}
-    h = h * 60;
-    if (h < 0) {h = h + 360; }
-    l = (min + max) / 2;
-    if (min == max) {
-      s = 0;
-    } else {
-      if (l < 0.5) {
-        s = (max - min) / (max + min);
-      } else {
-        s = (max - min) / (2 - max - min);
-      }
-    }
-    s = s;
-    return {h : h, s : s, l : l};
-  }
-  function rgbToHwb(r, g, b) {
-    var h, w, bl;
-    r = r / 255;
-    g = g / 255;
-    b = b / 255;
-    max = Math.max(r, g, b);
-    min = Math.min(r, g, b);
-    chroma = max - min;
-    if (chroma == 0) {
-      h = 0;
-    } else if (r == max) {
-      h = (((g - b) / chroma) % 6) * 360;
-    } else if (g == max) {
-      h = ((((b - r) / chroma) + 2) % 6) * 360;
-    } else {
-      h = ((((r - g) / chroma) + 4) % 6) * 360;
-    }
-    w = min;
-    bl = 1 - max;
-    return {h : h, w : w, b : bl};
-  }
-
-  function rgbToCmyk(r, g, b) {
-    var c, m, y, k;
-    r = r / 255;
-    g = g / 255;
-    b = b / 255;
-    max = Math.max(r, g, b);
-    k = 1 - max;
-    if (k == 1) {
-      c = 0;
-      m = 0;
-      y = 0;
-    } else {
-      c = (1 - r - k) / (1 - k);
-      m = (1 - g - k) / (1 - k);
-      y = (1 - b - k) / (1 - k);
-    }
-    return {c : c, m : m, y : y, k : k};
-  }
-  function toHex(n) {
-    var hex = n.toString(16);
-    while (hex.length < 2) {hex = "0" + hex; }
-    return hex;
-  }
-  function cl(x) {
-    console.log(x);
-  }
-  function ColorTrim(x) {
-    return x.replace(/^\s+|\s+$/g, '');
-  }
-  function isHex(x) {
-    return ('0123456789ABCDEFabcdef'.indexOf(x) > -1);
-  }
+    return Props;
+  };
 
 
 
-  function ColorPicker(color){
-    var self = this;
 
-    self.colors = {};
-    self.attachValues(toColorObject(color));
-  }
 
-  ColorPicker.prototype = {
-    toRgbString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "rgb(" + color_.red + ", " + color_.green + ", " + color_.blue + ")";
-    },
-    toRgbaString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "rgba(" + color_.red + ", " + color_.green + ", " + color_.blue + ", " + color_.opacity + ")";
-    },
-    toHwbString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hwb(" + color_.hue + ", " + Math.round(color_.whiteness * 100) + "%, " + Math.round(color_.blackness * 100) + "%)";
-    },
-    toHwbStringDecimal : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hwb(" + color_.hue + ", " + color_.whiteness + ", " + color_.blackness + ")";
-    },
-    toHwbaString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hwba(" + color_.hue + ", " + Math.round(color_.whiteness * 100) + "%, " + Math.round(color_.blackness * 100) + "%, " + color_.opacity + ")";
-    },
-    toHslString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hsl(" + color_.hue + ", " + Math.round(color_.sat * 100) + "%, " + Math.round(color_.lightness * 100) + "%)";
-    },
-    toHslStringDecimal : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hsl(" + color_.hue + ", " + color_.sat + ", " + color_.lightness + ")";
-    },
-    toHslaString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "hsla(" + color_.hue + ", " + Math.round(color_.sat * 100) + "%, " + Math.round(color_.lightness * 100) + "%, " + color_.opacity + ")";
-    },
-    toCmykString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "cmyk(" + Math.round(color_.cyan * 100) + "%, " + Math.round(color_.magenta * 100) + "%, " + Math.round(color_.yellow * 100) + "%, " + Math.round(color_.black * 100) + "%)";
-    },
-    toCmykStringDecimal : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return "cmyk(" + color_.cyan + ", " + color_.magenta + ", " + color_.yellow + ", " + color_.black + ")";
-    },
-    toNcolString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return color_.ncol + ", " + Math.round(color_.whiteness * 100) + "%, " + Math.round(color_.blackness * 100) + "%";
-    },
-    toNcolStringDecimal : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return color_.ncol + ", " + color_.whiteness + ", " + color_.blackness;
-    },
-    toNcolaString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return color_.ncol + ", " + Math.round(color_.whiteness * 100) + "%, " + Math.round(color_.blackness * 100) + "%, " + color_.opacity;
-    },
-    toName : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var r, g, b, colorhexs = getColorArr('hexs');
-      for (i = 0; i < colorhexs.length; i++) {
-        r = parseInt(colorhexs[i].substr(0,2), 16);
-        g = parseInt(colorhexs[i].substr(2,2), 16);
-        b = parseInt(colorhexs[i].substr(4,2), 16);
-        if (color_.red == r && color_.green == g && color_.blue == b) {
-          return getColorArr('names')[i];
-        }
-      }
-      return "";
-    },
-    toHexString : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var r = toHex(color_.red);
-      var g = toHex(color_.green);
-      var b = toHex(color_.blue);
-      return "#" +  r + g + b;
-    },
-    toRgb : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return {r : color_.red, g : color_.green, b : color_.blue, a : color_.opacity};
-    },
-    toHsl : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return {h : color_.hue, s : color_.sat, l : color_.lightness, a : color_.opacity};
-    },
-    toHwb : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return {h : color_.hue, w : color_.whiteness, b : color_.blackness, a : color_.opacity};
-    },
-    toCmyk : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return {c : color_.cyan, m : color_.magenta, y : color_.yellow, k : color_.black, a : color_.opacity};
-    },
-    toNcol : function(color){
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      return {ncol : color_.ncol, w : color_.whiteness, b : color_.blackness, a : color_.opacity};
-    },
-    isDark : function (n,color) {
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var m = (n || 128);
-      return (((color_.red * 299 + color_.green * 587 + color_.blue * 114) / 1000) < m);
-    },
-    saturate : function (n,color) {
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var x, rgb, color;
-      x = (n / 100 || 0.1);
-      color_.sat += x;
-      if (color_.sat > 1) {color_.sat = 1;}
-      rgb = hslToRgb(color_.hue, color_.sat, color_.lightness);
-      color = colorObject(rgb, color_.opacity, color_.hue, color_.sat);
-      that.attachValues(color);
-    },
-    desaturate : function (n,color) {
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var x, rgb, color;
-      x = (n / 100 || 0.1);
-      color_.sat -= x;
-      if (color_.sat < 0) {color_.sat = 0;}
-      rgb = hslToRgb(color_.hue, color_.sat, color_.lightness);
-      color = colorObject(rgb, color_.opacity, color_.hue, color_.sat);
-      that.attachValues(color);
-    },
-    lighter : function (n,color) {
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var x, rgb, color;
-      x = (n / 100 || 0.1);
-      color_.lightness += x;
-      if (color_.lightness > 1) {color_.lightness = 1;}
-      rgb = hslToRgb(color_.hue, color_.sat, color_.lightness);
-      color = colorObject(rgb, color_.opacity, color_.hue, color_.sat);
-      that.attachValues(color);
-    },
-    darker : function (n,color) {
-      var that = this,
-          color_;
-
-      if(color){
-        color_ = toColorObject(color);
-      } else {
-        color_ = that.colors;
-      }
-      var x, rgb, color;
-      x = (n / 100 || 0.1);
-      color_.lightness -= x;
-      if (color_.lightness < 0) {color_.lightness = 0;}
-      rgb = hslToRgb(color_.hue, color_.sat, color_.lightness);
-      color = colorObject(rgb, color_.opacity, color_.hue, color_.sat);
-      that.attachValues(color);
-    },
-    attachValues : function(color){
-      var that = this;
-
-      that.colors.red = color.red;
-      that.colors.green = color.green;
-      that.colors.blue = color.blue;
-      that.colors.hue = color.hue;
-      that.colors.sat = color.sat;
-      that.colors.lightness = color.lightness;
-      that.colors.whiteness = color.whiteness;
-      that.colors.blackness = color.blackness;
-      that.colors.cyan = color.cyan;
-      that.colors.magenta = color.magenta;
-      that.colors.yellow = color.yellow;
-      that.colors.black = color.black;
-      that.colors.ncol = color.ncol;
-      that.colors.opacity = color.opacity;
-      that.colors.valid = color.valid;
-    },
-  }
 
 
 
@@ -2849,6 +2691,7 @@
   // +++
 
   let ManagerProto = {
+
     LSM: LSM,
     TM: TM,
     sortTable: function($table,method = 'a-z'){
@@ -2941,7 +2784,82 @@
 
     component: component,
 
-    cp: ColorPicker,
+    browser: browserInfo(),
+
+    on: ManagerOn,
+
+    fetch: async function Fetch(url,functions,options){
+      var _fetch = new http(),fetched,fetchedData,
+          fetchedJson,fetchedXml,fetchedDatas;
+
+      fetched = _fetch.get(url);
+      fetchedData = _fetch.get(url);
+      fetchedJson = _fetch.getJson(url,function(){});
+      fetchedXml = _fetch.getXml(url,function(){});
+
+      fetchedDatas = {
+        text: function(){
+          return fetched;
+        },
+        data: function(){
+          return fetchedData
+        },
+        json: function(){
+          return fetchedJson
+        },
+        xml: function(){
+          return fetchedXml;
+        },
+      }
+
+      functions(fetchedDatas)
+
+      return fetchedDatas;
+    },
+
+    animate: function(el,keyframes,count,time){
+      var self = this,
+          $el = $(el),
+          time = time ? time : 1000,
+          animation = "",
+          keyFrame_s = "",
+          name = el;
+
+      name = testNameCase(name);
+
+      self.animate.$animate = $.fn.animate;
+          
+
+      animation = "manager__animation__"+randFrom(1111,9999)+"__"+name;
+
+      for(var keyframe in keyframes){
+        var _keyframe = keyframes[keyframe];
+        keyFrame_s += `
+            ${keyframe}{`
+        for(var prop in _keyframe){
+          keyFrame_s += `${prop}:${_keyframe[prop]};`;
+        }
+        keyFrame_s += `}
+        `;
+        console.log(keyframe);
+      }
+
+      keyFrame_s = `
+        <style>
+          @keyframes ${animation}{
+            ${keyFrame_s}
+          }
+        </style>
+      `;
+
+      animation = time+"ms " + (count ? count : "1") + " "+animation;
+
+      console.log(keyFrame_s,animation);
+      $el.css({
+        'animation': animation,
+      });
+      $('head').append(keyFrame_s);
+    },
 
     asLongAs: function aslongas(condition,functions,failClallBack){
       if(condition){
@@ -2979,9 +2897,17 @@
         };
       }
 
-      that.__proto__[name] = $object;
+      _createClass($object.__proto__, null, [{
+        key: "__mangerProto__",
+        value: that.__mangerProto__
+      }]);
+
+      _createClass(that, null, [{
+        key: name,
+        value: $object,
+      }]);
+
       if(isObject){
-        that.__proto__[name].__proto__.manager_self = that;
         $object.extendedByManager = true;
       }
 
@@ -3008,8 +2934,8 @@
           name = module,
           fun;
 
-      if(that.__proto__[name] != undefined && that.__proto__[name].extendedByManager == true){
-        fun = that.__proto__[name];
+      if(that[name] != undefined && that[name].extendedByManager == true){
+        fun = that[name];
       } else {
         errors.undefined.module(name);
         return false;
@@ -3024,17 +2950,17 @@
       var that = this,
           name = module;
 
-      if(that.__proto__[name] != undefined && that.__proto__[name].extendedByManager == true){
-        delete that.__proto__[name];
+      if(that[name] != undefined && that[name].extendedByManager == true){
+        delete that[name];
       } else {
         errors.undefined.module(name);
         return false;
       }
 
       return {
-        object: that.__proto__[name],
+        object: that[name],
         name: name,
-        unextended: that.__proto__[name] == undefined ? true : false,
+        unextended: that[name] == undefined ? true : false,
       }
     },
 
@@ -3042,15 +2968,15 @@
       var that = this,
           name = module;
 
-      if(that.__proto__[name] != undefined && that.__proto__[name].extendedByManager == true){
-        window[module] = that.__proto__[name];
+      if(that[name] != undefined && that[name].extendedByManager == true){
+        window[module] = that[name];
       } else {
         errors.undefined.module(name);
         return false;
       }
 
       return {
-        object: that.__proto__[name],
+        object: that[name],
         extendedTo: true,
       }
     },
@@ -3070,7 +2996,7 @@
       }
 
       deps.forEach(function(item){
-        if(self.__proto__[item] != undefined){
+        if(self[item] != undefined){
           allAreFound = true;
         } else {
           allAreFound = false;
@@ -3157,7 +3083,7 @@
       script = $.getScript(file,callback);
       script_ = new http().get(file);
 
-      script.done(none => {
+      script.done(() => {
         script_ = script.responseText;
       });
 
@@ -3190,7 +3116,7 @@
             extend(name_);
           },
           ready: function(func){
-            script.done(none => {
+            script.done(() => {
               func({
                 script: script_,
                 file: file,
@@ -3223,73 +3149,180 @@
       return JsonObject;
     },
 
-    fn: FN,
+    getScript: function(file){
+      var self = this,_file;
 
-    __proto__: function Manager(){
-      var self = this;
-          
-      return self.__proto__.__proto__.options;
+      if(!file) return;
+
+      _file = file+'.manager';
+
+      var script_ = new http().get(_file); 
+      var _moduleInfo = script_.split(moduleStart)[1].split(moduleEnd)[0],
+      _moduleName = _moduleInfo.split('name:')[1].split(',')[0],
+      _moduleVersion = _moduleInfo.split('version:')[1].split(',')[0],
+      _moduleFunctionName = _moduleInfo.split('moduleFunction:')[1].split(',')[0];
+
+      _moduleVersion = _moduleVersion.split('/')[1].split('/')[0];
+
+      var _moduleFunction = script_.split(moduleFunStart)[1]
+          .split(moduleFunEnd)[0];
+
+      _moduleFunction+= "Manager.extends("+_moduleFunctionName+",\""+_moduleName+"\")";
+
+      self.eval(_moduleFunction);
+
+      if(!self[_moduleName] || self[_moduleName] == null) return;
+
+      _createClass(self[_moduleName],null,[{
+        key: "Manager."+_moduleName,
+        value: _moduleFunction,
+      }]);
     },
+
+    fn: FN,
 
   };
 
-  function manager(){
-    var self = this;
-
-    for(var i in self.__proto__){
-      self.__proto__[i].__proto__.manager_self = self;
-    }
-
-    self.info = plugin;
-
-    self.parent = new function Parent(){
-      return {
-        opener: navigator,
-        root: window,
+  let _Manager__Proto = {
+    info: new function Info(){return plugin},
+    __mangerProto__: {
+      self: window,
+      m: new function Manager(){return this},
+      document: {
         doc: document,
-        docType: document.doctype,
         title: document.title,
-        __proto__: function Parent(){
-          return {
-            opener: this.opener,
-            root: this.root,
-            doc: this.doc,
-            title: this.title,
-          }
+        pathInfo: location,
+        history: history,
+        type: document.doctype,
+        script: currentScript,
+        search: location.search,
+        hash: location.hash,
+        name: function GetFileName(){
+          var loc = location.pathname ? location.pathname : location.href,
+              _loc = loc.split("/"),
+              name = "";
+
+          name = _loc[_loc.length - 1];
+
+          name = name == "" ? _loc[_loc.length - 2] : name;
+
+          return name;
+        }(),
+      },
+      root: navigator,
+      __proto__: class ManagerProto{
+        ManagerProto(){
+          return ManagerProto;
         }
-      }
-    };
+      },
+    },
+  };
 
-    self.__proto__.__proto__.options = {
-      "$type": "[Object Manager]",
-      "$proto": {
-        "type": typeof self,
-        "id": "Manager",
-        "args": arguments,
-      }
-    };
-
-
+  for(var proto in ManagerProto){
+    _Manager__Proto.__mangerProto__.__proto__.__defineGetter__(proto,function(){
+      return ManagerProto[proto];
+    });
+    _Manager__Proto.__mangerProto__.__proto__.__defineSetter__(proto,function(arg){
+      return ManagerProto[proto];
+    });
   }
 
-  manager.prototype = new function Manager(){
-    return ManagerProto;
+  class manager{
+    constructor(){
+      var self = this;
+
+      for(var proto in _Manager__Proto){
+        self[proto] = _Manager__Proto[proto];
+      }
+
+      _createClass(self,null,[{
+        key: "__mangerProto__",
+        value: _Manager__Proto["__mangerProto__"],
+      }]);
+
+      self.info.__proto__ = function info(){
+        return this;
+      };
+    }
   }
 
   const Manager = new manager();
 
-  if(window.angular != undefined){
-    var ManagerNG = angular.module('Manager', []);
-
-    ManagerNG.directive('Manager', ['$mngr', function ($mngr) {
-      return Manager;
+  for(var _module in ManagerProto){
+    ManagerProto["$constructor"] = Manager;
+    _createClass(ManagerProto[_module].__proto__, null, [{
+      key: "__mangerProto__",
+      value: ManagerProto.__mangerProto__}
+    ]);
+    _createClass(Manager, null, [{
+      key: _module,
+      value: ManagerProto[_module],
     }]);
-  } else {}
+  }
 
+  Manager.__proto__ = manager;
 
-  window.__proto__.Manager = Manager;
+  _createClass(window, null, [{
+    key: "Manager",
+    value: Manager,
+  }]);
+
+  $.extend({
+    "m": Manager,
+  });
+
+  $(document).ready(function(){
+
+    class ManagerInclude extends HTMLElement{
+      constructor(){
+        super();
+      }
+
+      connectedCallback(){
+        var $ths = $(this),
+          $file = $ths.attr('file'),
+          $http = new http(),$content;
+
+        $content = $http.get($file);
+
+        $ths.html($content);
+      }
+    }
+    customElements.define('manager-include',ManagerInclude);
+
+    class ManagerScript extends HTMLElement{
+      constructor(){
+        super();
+      }
+
+      render(){
+        var $ths = $(this),
+          $src = $ths.attr('src'),
+          $script = $ths.text();
+
+        $ths.prop('hidden','true');
+
+        if($src){
+          Manager.require($src);
+          return false;
+        } else {
+          Manager.eval($script);
+        }
+      }
+
+      connectedCallback(){
+        this.render();
+      }
+
+      attributeChangedCallback(name,oldVal,newVal){
+        this.render();
+      }
+
+    }
+    customElements.define('manager-script',ManagerScript);
+  });
 
   return Manager;
 }));
 
-/*# sourceMappingURL=lsm.js.map */
+/*# sourceMappingURL=manager.js.map */
