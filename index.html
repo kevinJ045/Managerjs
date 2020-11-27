@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE Xhtml>
 <html>
 <head>
   <title>Manager.js</title>
@@ -22,7 +22,7 @@
 
   <section data-title="Table o' contents" id="section-TABLE">
     <h2 data-type="Manager js properties"></h2>
-    <p data-type="Manager js properties / modules are explained below"></p>
+    <p data-type="Manager js properties / modules are explained below, ^ Note: some modules may not be usefull for you, but they are usefull for manager's init"></p>
     <div class="tableContr free">
       <table>
         <thead>
@@ -119,6 +119,20 @@
     <p data-type="Manager has also a Cookie Manager, lets you use Cookies"></p>
   </section>
 
+  <section data-title="Element Controller" id="section-Elctrl">
+    <h2 data-type="Manager Element Controller"></h2>
+    <p data-type="Manager Element Controller is a module that is an event handler and an Element Controller"></p>
+    
+    <a href="#!" class="a" id="onHold">
+      Hold Me!!
+    </a>
+    <center>
+      <div style="width: 100px;height: 100px;background: #fff;color:black;" id="animate">
+        js<br>Anima<br>tions
+      </div>
+    </center>
+  </section>
+
   <section data-title="Sorting & Filtering" id="section-sortingsnfilterings">
     <h2 data-type="Manager Sorting & Filtering"></h2>
     <p data-type="Manager.js Also has sorting & filtering methods For Lists and Tables,^There are two types of sorting, which are a-z & z-a, and also two types of filtering, which are Clickable An Typeable"></p>
@@ -193,6 +207,10 @@
         Remove
       </button>
 
+      <manager-script>
+        listAllObjs(); // comments, Everything works in manager-script
+      </manager-script>
+
       <h4>Module Lists</h4>
 
 
@@ -213,9 +231,16 @@
         </div>
 
         <div class="box">
-          Using {{[id]}} to print $scopes,<br>
+          Using {{id}} to print $scopes,<br>
           {{newItem}}
+
+          {{undefinedItem}}
+
         </div>
+
+        <button class="a" onclick="reloadCtrl()">
+          Reload
+        </button>
 
       </manager-module>
 
@@ -248,7 +273,6 @@
     <manager-include file="./data/data.xml"></manager-include>
     <manager-include file="./data/data.txt"></manager-include>
   </section>
-
 
   <section data-title="Time & Date" id="section-TIMEDate">
     <h2 data-type="Manager Time Manager"></h2>
@@ -319,6 +343,21 @@
     </button>
   </section>
 
+  <section data-title="Browser Info" id="section-BrowserInfo">
+    <h2 data-type="Manager BrowserInfo"></h2>
+    <p data-type="Manager.js BrowserInfo is a module which lets you get the information of the Browser you/whoever is using,"></p>
+
+    <manager-module module="BrowserInfo">
+      Browser: {{browser}}<br>
+      Version: {{version}}<br>
+      Platform: {{platform}}<br>
+      Build: {{build}}<br><br>
+
+      Your browser is {{isIE}}
+    </manager-module>
+
+  </section>
+
   <section data-title="Iframes" id="section-iframes">
     <h2 data-type="Manager Iframes"></h2>
     <p data-type="Manager.js Iframe Manager is a module which lets you control elemnts inside iframes"></p>
@@ -344,7 +383,7 @@
 
   <section data-title="Color Picker" id="section-colors">
     <h2 data-type="Manager Color Picker"></h2>
-    <p data-type="Manager.js Color Picker is a Module that let's you: convert rgb to hex,hex to rgb,to hls"></p>
+    <p data-type="Manager.js Color Picker is not a Module, its a Manager Plugin that let's you: convert rgb to hex,hex to rgb,to hls"></p>
 
     <center>
       <div style="width: 100px;height: 100px;background: #fff;" id="colorPicker">
@@ -371,6 +410,14 @@
     <button class="a" onclick="comp.Fullscreen.close();">
       Close Fullscreen
     </button>
+
+    <div id="opener">
+      No Images Yet!!
+    </div>
+
+    <a href="#!" class="a" onclick="opener()">
+      Create a file opener
+    </a>
   </section>
 
   <div id="menu">
@@ -388,7 +435,7 @@
 
 
   <script src="./lib/jquery.min.js"></script>
-  <script type="application/javascript" src="./src/manager.js"></script>
+  <script type="application/javascript" src="./dist/manager.min.js"></script>
 
   <script>
     Manager.require('./data/typer.js');//.appendTo('body');
@@ -402,20 +449,24 @@
       //hello(); // This is right
     });
 
+    Manager.getScript('./src/cp');
+
     //hello(); // This will return an error();
-    
 
-    Manager.require('./demo/demo.js');
+    $.m.require('./demo/demo.js'); // Using $.m ShortCut
 
-    console.log(Manager,typeof Manager,typeof Manager.__proto__,"manager");
+    console.log(
+    Manager.info.name+","+Manager.info.version
+    ,Manager,typeof Manager,typeof Manager.__proto__,"manager");
   </script>
 
   <script type="text/javascript">
     $.ajax({
-      url: 'https://api.github.com/repos/kevinj045/Managerjs/commits/master',
+      url: 'https://api.github.com/repos/kevinj045/Managerjs/commits/main',
       dataType: 'json',
       success: function(data) {
-        var sha = data.sha;
+        var sha = data;
+        console.log(data)
         $('.github-commit')
           .html('GitHub Forks: '+sha)
           .attr('href', data.html_url);

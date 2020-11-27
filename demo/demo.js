@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+    $.m.on("#onHold").hold(function(){
+      console.log("Onhold Event Fired !!");
+    },{
+      time: 700
+    });
+
     $('#menuToggle').click(function(){
         $('#menu').toggleClass('open');
     });
@@ -214,9 +220,9 @@ new Manager.filter($input,$table);
 
 }
 
-outPutLocalStorage();
+//outPutLocalStorage();
 
-
+Manager.extends(outPutLocalStorage,"outPutLocalStorage");
 
 console.log("Setting and Getting Demo2");
 lsm.default.set('Demo2','Default Manager Object');
@@ -350,6 +356,8 @@ var ObjM = new Manager.OBJM('Demo'),
 ObjM_2 = new Manager.OBJM('Demo2'),
 $scope = ObjM.Objs;
 
+console.log(ObjM);
+
 ObjM_2.set("Concatinatable",true);
 
 ObjM.set('Greeting',"hello");
@@ -380,7 +388,6 @@ function listAllObjs(){
 
   console.log($scope.Demo);
 }
-listAllObjs();
 $('#allObjs_add').click(function(){
   var val = $('#allObjs_New').val();
   val = val.trim();
@@ -402,17 +409,33 @@ $('#allObjs_remove').click(function(){
   listAllObjs();
 });
 
-ObjM.controller('Demo',function($scope){
+var ObjM_ctrl = ObjM.controller('Demo',function($scope){
   $scope.new = {'DemoProp':'DemoVal'};
   console.log($scope,"fromController");
 },{extends:'Demo'}); // So that now it can use the Global Scope *Demo*
+
+ObjM.controller('BrowserInfo',function($scope){
+  $scope.browser = $.m.browser.browser;
+  $scope.version = $.m.browser.version;
+  $scope.platform = $.m.browser.platform;
+  $scope.build = $.m.browser.build;
+
+  // Let's see if the browser is IE(Microsoft's Internet Explorer)
+  if($.m.browser.isBrowser('msie') && $.m.browser.isVersion.isOrLess(8)){
+    $scope.isIE = 'IE, and version is or less than 8.0.';
+  } else if ($.m.browser.isBrowser('msie') && $.m.browser.isVersion.isMoreThan(8)) {
+    $scope.isIE = 'IE, and version is more than 8.0.';
+  } else {
+    $scope.isIE = 'NOT IE.';
+  }
+},{extends:'Demo'});
 
 ObjM.concat('Demo2');
 
 Manager.extends(listAllObjs);
 console.groupEnd("Manager ObjManager");
 
-console.group("Manager HTTP");
+console.groupCollapsed("Manager HTTP");
 var http = new Manager.http(),elFileLoader = $('#FileLoader');
 
 function loadFile(type){
@@ -469,6 +492,12 @@ Manager.define("loadFile",["listAllObjs","http","OBJM"],loadFile,{ //Required st
 
 Manager.exec('loadFile','txt');
 
+Manager.fetch("./data/data.json", function(response){
+  console.log(response.json(),"JSON");
+  console.log(response.text(),"Text");
+  console.log(response.xml(),"XML");
+  console.log(response.data(),"data, same as text");
+});
 
 console.groupEnd("Manager HTTP");
 
@@ -530,6 +559,8 @@ var comp = new Manager.component('body');
 //comp.getHeader();
 //comp.getFooter();
 
+console.log(comp);
+
 var newEl = comp.nel('section'); // new Element
 newEl.attr({
   "id": 'componentList',
@@ -555,79 +586,207 @@ newEl.outputTo('#componentList');
 
 comp.nel('br').outputTo('#componentList');
 
+function opener(){
+  comp.fileChooser(function(evt,event,input){
+    $("#opener").html(`
+        <img src="${evt.target.result}" width="100%"/>
+      `);
+  },"data");
+}
 
 newEl = comp.nel('button');
 newEl.addClass('a');
 newEl.html('Button Element');
 newEl.outputTo('#componentList');
 
-var uses = {
-  "LSM":"Managing localStorage,sessionStorage 7 cookies",
-  "TM":"Managing Date() and time functions",
-  "sortTable":"Sorting Tables",
-  "sortList":"Sorting Lists",
-  "filter":"Filtering elements like: div,li,td,tr",
-  "OBJM":"Managing Object Controllers",
-  "http":"Managing Ajax/XMLHttpRequest",
-  "scrollDetection":"Detecting scroll direction",
-  "pickRandom":"Picking a random word from words",
-  "randFrom":"Picking a random interval from 2 numbers, min & max",
-  "browserWindow":"Managing the window,onpageshow,onpagehide",
-  "claculator":"Calculating numbers",
-  "ifrCtrl":"Controlling iframes",
-  "component":"Managing & Creating elements",
-  "cp":"Module that let's you: convert",
-  "asLongAs":"While loop",
-  "extends":"Importing/defining function to Manager",
-  "extendsFunction":"Importing/defining function from strings to Manager",
-  "eval":"Run A Function from String",
-  "exec":"Executes A module",
-  "unExtend":"Removes a module",
-  "exportModule":"Exporting imported modules",
-  "define":"Importing/defining function to Manager with dependencies",
-  "defineIn":"Importing/defining function to An Object with/without dependencies",
-  "require":"Importing scripts",
-  "requireJSON":"Importing Objects from JSON files",
-  "fn":"Jquery Init",
-}
-
-var meth,type____,use;
-var index = 0;
-
-for(var i in Manager.__proto__){
-  if(typeof Manager[i] == "function"){
-    for(var i_ in Manager[i].prototype){
-      index++;
-    }
-    if(index < 2){
-      meth = "Manager."+i+"(args)";
-      type____ = "Function";
-    } else {
-      meth = "new Manager."+i+"(args)";
-      type____ = "Constructor";
-    }
-    index = 0;
-  } else {
-    if(typeof Manager[i] == "object"){
-      meth = "Manager."+i+".prop(args)";
-    } else {
-      meth = "Manager."+i+"";
-    }
-  }
-
-  var extendedByManager = Manager[i].extendedByManager;
-
-  if(extendedByManager == true || i == "options" || i == "manager_self"){
-    
-  } else {
-    use = uses[i] != undefined ? uses[i] : "Unknown";
-
-    var row = comp.tableRow(i,typeof Manager[i] + "," + type____,meth,use)
-
-    $("#PROPERTIESTABLE").append(row);
-  }
-  
-}
+$("#PROPERTIESTABLE").html(`
+<tr>
+<td>LSM</td>
+<td>function,Constructor
+<td>new Manager.LSM(name,options)</td>
+<td>Managing localStorage,sessionStorage 7 cookies</td>
+</tr>
+<tr>
+<td>TM</td>
+<td>function,Constructor
+<td>new Manager.TM(options)</td>
+<td>Managing Date() and time functions</td>
+</tr>
+<tr>
+<td>sortTable</td>
+<td>function,Function
+<td>Manager.sortTable(table,method)</td>
+<td>Sorting Tables</td>
+</tr>
+<tr>
+<td>sortList</td>
+<td>function,Function
+<td>Manager.sortList(list,method)</td>
+<td>Sorting Lists</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>function,Constructor
+<td>new Manager.filter(inpt,element,options)</td>
+<td>Filtering elements like: div,li,td,tr</td>
+</tr>
+<tr>
+<td>OBJM</td>
+<td>function,Constructor
+<td>new Manager.OBJM(name)</td>
+<td>Managing Object Controllers</td>
+</tr>
+<tr>
+<td>http</td>
+<td>function,Constructor
+<td>new Manager.http()</td>
+<td>Managing Ajax/XMLHttpRequest</td>
+</tr>
+<tr>
+<td>scrollDetection</td>
+<td>function,Function
+<td>Manager.scrollDetection(el,options)</td>
+<td>Detecting scroll direction</td>
+</tr>
+<tr>
+<td>pickRandom</td>
+<td>function,Function
+<td>Manager.pickRandom(words)</td>
+<td>Picking a random word from words</td>
+</tr>
+<tr>
+<td>randFrom</td>
+<td>function,Function
+<td>Manager.randFrom(min,max)</td>
+<td>Picking a random interval from 2 numbers, min & max</td>
+</tr>
+<tr>
+<td>browserWindow</td>
+<td>function,Constructor
+<td>new Manager.browserWindow(onpageshow,onpagehide)</td>
+<td>Managing the window,onpageshow,onpagehide</td>
+</tr>
+<tr>
+<td>claculator</td>
+<td>function,Constructor
+<td>new Manager.claculator(args)</td>
+<td>Calculating numbers</td>
+</tr>
+<tr>
+<td>ifrCtrl</td>
+<td>function,Constructor
+<td>new Manager.ifrCtrl(element)</td>
+<td>Controlling iframes</td>
+</tr>
+<tr>
+<td>component</td>
+<td>function,Constructor
+<td>new Manager.component(element)</td>
+<td>Managing & Creating elements</td>
+</tr>
+<tr>
+<td>browser</td>
+<td>object,Constructor
+<td>Manager.browser.prop</td>
+<td>Getting the browser info</td>
+</tr>
+<tr>
+<td>on</td>
+<td>function,Function
+<td>Manager.on(el).event</td>
+<td>Event Handler for manager</td>
+</tr>
+<tr>
+<td>fetch</td>
+<td>function,Function
+<td>Manager.fetch(url,functions,options)</td>
+<td>Fetches data as json,xml,text...</td>
+</tr>
+<tr>
+<td>animate</td>
+<td>function,Function
+<td>Manager.animate(element,keyframes,count,time)</td>
+<td>Css Animations from a javascript object</td>
+</tr>
+<tr>
+<td>asLongAs</td>
+<td>function,Function
+<td>Manager.asLongAs(condition)</td>
+<td>While loop</td>
+</tr>
+<tr>
+<td>extends</td>
+<td>function,Function
+<td>Manager.extends(module,name,isUpdate)</td>
+<td>Importing/defining function to Manager</td>
+</tr>
+<tr>
+<td>extendsFunction</td>
+<td>function,Function
+<td>Manager.extendsFunction(module,fun,isUpdate)</td>
+<td>Importing/defining function from strings to Manager</td>
+</tr>
+<tr>
+<td>eval</td>
+<td>function,Function
+<td>Manager.eval(functions)</td>
+<td>Run A Function from String</td>
+</tr>
+<tr>
+<td>exec</td>
+<td>function,Function
+<td>Manager.exec(module,args)</td>
+<td>Executes A module</td>
+</tr>
+<tr>
+<td>unExtend</td>
+<td>function,Function
+<td>Manager.unExtend(module)</td>
+<td>Removes a module</td>
+</tr>
+<tr>
+<td>exportModule</td>
+<td>function,Function
+<td>Manager.exportModule(module)</td>
+<td>Exporting imported modules</td>
+</tr>
+<tr>
+<td>define</td>
+<td>function,Function
+<td>Manager.define(name,dependencies,module,options)</td>
+<td>Importing/defining function to Manager with dependencies</td>
+</tr>
+<tr>
+<td>defineIn</td>
+<td>function,Function
+<td>Manager.defineIn([name,module],module2)</td>
+<td>Importing/defining function to An Object with/without dependencies</td>
+</tr>
+<tr>
+<td>require</td>
+<td>function,Function
+<td>Manager.require(file,options)</td>
+<td>Importing scripts</td>
+</tr>
+<tr>
+<td>requireJSON</td>
+<td>function,Function
+<td>Manager.requireJSON(json,prop)</td>
+<td>Importing Objects from JSON files</td>
+</tr>
+<tr>
+<td>getScript</td>
+<td>function,Function
+<td>Manager.getScript(file)</td>
+<td>Get a module from a well formatted manager/javascript file</td>
+</tr>
+<tr>
+<td>fn</td>
+<td>function,Constructor
+<td>new Manager.fn(element).prop(args)</td>
+<td>Jquery Init</td>
+</tr>
+`);
 
   var JSON_OBJECT = Manager.requireJSON('./data/data.json');
   console.log(JSON_OBJECT,"requireJSON");
@@ -689,6 +848,23 @@ for(var i in Manager.__proto__){
     }
 
   console.groupEnd("Manager Colours");
+
+function reloadCtrl(){
+  ObjM.set("undefinedItem","DefinedNow");
+  ObjM_ctrl.reload();
+  console.log(ObjM.getController("Demo"));
+}
+
+Manager.animate('#animate',{
+  "0%":{
+    "background": "red",
+    "opacity": '0.5',
+  },
+  "100%":{
+    "background": "blue",
+    "opacity": "1",
+  }
+},"infinite",2000);
 
 console.groupEnd("Manager Others");
 
