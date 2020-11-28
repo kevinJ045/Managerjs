@@ -65,6 +65,3 @@ also you can visit the [Demo](https://mngrjs.netlify.app/) here,
 ## Visit the [wiki](https://github.com/NextSpot045/Managerjs/wiki) For more Info.
 
 # Thanks !!
-<script>
-alert("hii");
-</script>
