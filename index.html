@@ -9,7 +9,7 @@
 
   <h1 data-type="Manager.js"></h1>
   <p data-type="A javascript library to manage Localstorage,Date,Cookies,Ajax/JQuert Ajax,Object Manager"></p>
-  <a class="a github-commit" href="https://github.com/kevinj045/jsbuttons">
+  <a class="a github-commit" href="https://github.com/NextSpot045/jsbuttons">
     GitHub Forks: NAN <!-- Here Will be appended the forks from github-->
   </a>
 
@@ -466,7 +466,6 @@
       dataType: 'json',
       success: function(data) {
         var sha = data;
-        console.log(data)
         $('.github-commit')
           .html('GitHub Forks: '+sha)
           .attr('href', data.html_url);
