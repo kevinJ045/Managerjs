@@ -1,5 +1,7 @@
 # **Manager.js**
 
+![Managerjs Logo](https://mngrjs.netlify.app/docs/favicon.png)
+
 ## What is it?
 
 **Manager.js** is a **javascript** library that lets you use  
