@@ -61,4 +61,6 @@ but it currently needs Jquery as a main executor,
 There is a demo at this repo, open it and be sure to open  
 the DevTools,
 
+## Visit the [wiki](./wiki) For more Info.
+
 # Thanks !!
