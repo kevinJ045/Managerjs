@@ -1,14 +1,11 @@
 :root{
-  --theme-dark: #0c1021;
-  --theme-dark-grad: linear-gradient(to bottom,
-    #6600cc,
-    #0c1021,#0c1021,#0c1021,#0c1021,#0c1021,#0c1021,
-    #6600cc,#6600cc);
-  --theme-color-grad: linear-gradient(#6600cc,#800000);
-  --theme-color-grad-2: linear-gradient(#800000,#6600cc);
-  --theme-color-grad-3: linear-gradient(#6600cc,#6600cc,#800000);
-  --theme-color: #6600cc;
-  --theme-color-rgb: 102, 0, 204;
+  --theme-dark: #ffffff;
+  --theme-dark-grad: #44ccaa;
+  --theme-color-grad: #44ccaa;
+  --theme-color-grad-2: #55ddbb;
+  --theme-color-grad-3: #66eecc;
+  --theme-color: #44ccaa;
+  --theme-color-rgb: 68, 204, 170;
 }
 
 body {
