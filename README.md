@@ -1,6 +1,8 @@
 # **Manager.js**
 
-<img src="https://mngrjs.netlify.app/docs/favicon.png" width="150px" alt="Managerjs logo"/>
+<p align="center">
+  <img src="https://mngrjs.netlify.app/docs/favicon.png" width="150px" alt="Managerjs logo"/>
+</p>
 
 ## What is it?
 
