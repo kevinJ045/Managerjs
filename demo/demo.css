@@ -303,6 +303,7 @@ code[attr]{
 #menu ul li{
   border-bottom: 1px solid var(--theme-color);
   cursor: pointer;
+  background: var(--theme-dark);
 }
 
 #menuToggle{
