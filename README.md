@@ -1,6 +1,6 @@
 # **Manager.js**
 
-![Managerjs Logo](https://mngrjs.netlify.app/docs/favicon.png)
+<img src="https://mngrjs.netlify.app/docs/favicon.png" width="150px" alt="Managerjs logo"/>
 
 ## What is it?
 
