@@ -461,17 +461,14 @@
   </script>
 
   <script type="text/javascript">
-    var reposArray = Manager.requireJSON("https://api.github.com/orgs/NextSpot045/repos"),repos = {};
+    var repo = Manager.requireJSON("https://api.github.com/repos/NextSpot045/Managerjs");
 
-    reposArray.forEach(function(repo){
-      repos[repo.name] = repo;
-    });
     $('.github-commit')
-          .html('<img width="20px" style="border-radius:50px;" src="'+ repos.Managerjs.owner.avatar_url
-          +'"> GitHub Forks: '+ repos.Managerjs.forks + "," + 
-            repos.Managerjs.forks_count + 
-            " Stars: " + repos.Managerjs.stargazers_count)
-          .attr("html",repos.Managerjs.html_url);
+          .html('<img width="20px" style="border-radius:50px;" src="'+ repo.owner.avatar_url
+          +'"> GitHub Forks: '+ repo.forks + "," + 
+            repo.forks_count + 
+            " Stars: " + repo.stargazers_count)
+          .attr("html",repo.html_url);
   </script>
 </body>
 </html>
