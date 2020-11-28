@@ -6,10 +6,7 @@
   "description": "Simple Javascript library to manage Javascript modules.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kevinj045/Managerjs/issues"
+    "url": "https://github.com/NextSpot045/Managerjs/issues"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "homepage": "https://github.com/kevinj045/Managerjs#readme"
+  "homepage": "https://github.com/NextSpot045/Managerjs#readme"
 }
