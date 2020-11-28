@@ -58,8 +58,9 @@ but it currently needs Jquery as a main executor,
 
 ## Demo
 
-There is a demo at this repo, open it and be sure to open  
-the DevTools,
+There is a demo at this repo,
+open it and be sure to open the DevTools,
+also you can visit the [Demo](https://mngrjs.netlify.app/) here,
 
 ## Visit the [wiki](https://github.com/NextSpot045/Managerjs/wiki) For more Info.
 
