@@ -4,6 +4,10 @@
   <img src="https://mngrjs.netlify.app/docs/favicon.png" width="150px" alt="Managerjs logo"/>
 </p>
 
+![Forks](https://img.shields.io/github/forks/NextSpot045/Managerjs.svg?style=social&label=Forks&maxAge=259200)
+![Stars](https://img.shields.io/github/stars/NextSpot045/Managerjs.svg?style=social&label=Stars&maxAge=259200)
+![Watchers](https://img.shields.io/github/watchers/NextSpot045/Managerjs.svg?style=social&label=Watchers&maxAge=259200)
+
 ## What is it?
 
 **Manager.js** is a **javascript** library that lets you use  
