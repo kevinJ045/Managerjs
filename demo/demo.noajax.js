@@ -220,7 +220,7 @@ new Manager.filter($input,$table);
 
 }
 
-//outPutLocalStorage();
+outPutLocalStorage();
 
 Manager.extends(outPutLocalStorage,"outPutLocalStorage");
 
@@ -447,70 +447,6 @@ ObjM.controller('BrowserInfo',function($scope){
 Manager.extends(listAllObjs);
 console.groupEnd("Manager ObjManager");
 
-console.groupCollapsed("Manager HTTP");
-var http = new Manager.http(),elFileLoader = $('#FileLoader');
-
-function loadFile(type){
-  if(type == 'json'){
-    http.getJson('./data/data.json',function(response){
-      $('#FileLoader').html(JSON.stringify(response));
-      ObjM.set('JsonData',response);
-      Manager.listAllObjs();
-    });
-  } else if(type == 'xml'){
-    http.getXml('./data/data.xml',function(response){
-      $('#FileLoader').empty();
-      var Xml = response,JSON_OBJECT = [];
-
-      Xml = $(Xml.getElementsByTagName('books'));
-
-      Xml.find('book').each(function(){
-        var $ths = $(this),
-            $id = $ths.attr('id'),
-            $author = $ths.find('author').text(),
-            $price_ = $ths.find('price').attr('by'),
-            $price = $ths.find('price').text();
-
-        $('#FileLoader').append(`
-          <div>
-            <h4>${$id}</h4>
-            <p>by ${$author}</p>
-            <p>${$price_} ${$price}</p>
-            <button class="a">
-              Buy 
-            </button>
-          </div>
-          `);
-
-        JSON_OBJECT.unshift({
-          id: $id,
-          author: $author,
-          price: $price,
-          price_: $price_,
-        });
-      });
-
-      ObjM.set('FromXML',JSON_OBJECT);
-      listAllObjs();
-    });
-  } else {
-    $('#FileLoader').html(http.get('./data/data.txt'));
-  }
-}
-
-Manager.define("loadFile",["listAllObjs","http","OBJM"],loadFile,{ //Required stuff
-  caseIns: false, // case Insensitive
-});
-
-Manager.exec('loadFile','txt');
-
-Manager.fetch("./data/data.json", function(response){
-  console.log(response.json(),"JSON");
-  console.log(response.text(),"Text");
-  console.log(response.xml(),"XML");
-  console.log(response.data(),"data, same as text");
-});
-
 console.groupEnd("Manager HTTP");
 
 console.groupCollapsed("Manager Others");
@@ -547,28 +483,6 @@ console.log(Formatted__calc);
 console.log(claculator.toNumber(Formatted__calc));
 var strState = "5+32+45/36222-857*7";
 console.log(strState,claculator.fromString(strState));
-
-var iframe_ = new Manager.ifrCtrl('#iframeToControl','./data/iframe.html');
-iframe = iframe_.getIframe();
-console.log(iframe);
-function ifr_toggle(elem){
-  iframe.body.find(elem).toggle();
-}
-function ifr_append(text){
-  iframe.body.append(text);
-}
-function ifr_getTitle(){
-  alert(iframe.document.title);
-}
-function ifr_height(first,last){
-  if(iframe_.height() == first){
-    iframe_.height(last)
-  } else {
-    iframe_.height(first)
-  }
-
-  console.log(iframe_.height(),$('#iframeToControl').height());
-}
 var comp = new Manager.component('body');
 //comp.getHeader();
 //comp.getFooter();
@@ -802,16 +716,8 @@ $("#PROPERTIESTABLE").html(`
 </tr>
 `);
 
-  var JSON_OBJECT = Manager.requireJSON('./data/data.json');
-  console.log(JSON_OBJECT,"requireJSON");
-  JSON_OBJECT = Manager.requireJSON('./data/data.json','Manager');
-  console.log(JSON_OBJECT,"requireJSON with a property");
-
-  ObjM.set("JSON_OBJECT",JSON_OBJECT);
 
   var Obj045 = {};
-
-  Manager.defineIn(["JSON_OBJECT",JSON_OBJECT],Obj045);
 
   Manager.defineIn(["function_",function(){
     alert('hii')
@@ -826,42 +732,6 @@ $("#PROPERTIESTABLE").html(`
   }],Obj045).extends();
   
   console.log(Obj045);
-
-  console.group("Manager Colours");
-
-    function covertCP(color){
-      if(color == "") return;
-      var CP = new Manager.cp(color);
-
-      console.log(
-        CP.toRgbString(),
-        CP.toRgbaString(),
-        CP.toHwbString(),
-        CP.toHwbStringDecimal(),
-        CP.toHwbaString(),
-        CP.toHslString(),
-        CP.toHslStringDecimal(),
-        CP.toHslaString(),
-        CP.toCmykString(),
-        CP.toCmykStringDecimal(),
-        CP.toNcolString(),
-        CP.toNcolStringDecimal(),
-        CP.toNcolaString(),
-        CP.toName(),
-        CP.toHexString(),
-        CP.toRgb(),
-        CP.toHsl(),
-        CP.toHwb(),
-        CP.toCmyk(),
-        CP.toNcol()
-      );
-
-      $('#colorPicker').css({
-        "background": color,
-      });
-    }
-
-  console.groupEnd("Manager Colours");
 
 function reloadCtrl(){
   ObjM.set("undefinedItem","DefinedNow");
