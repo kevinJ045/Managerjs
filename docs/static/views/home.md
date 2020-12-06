@@ -4,6 +4,12 @@
   <img src="./favicon.png" width="150px" alt="Managerjs logo"/>
 </p>
 
+<a href="https://github.com/NextSpot045/Managerjs/">
+   <img src="https://img.shields.io/github/forks/NextSpot045/Managerjs.svg?style=social&label=Forks&maxAge=2592000" >
+   <img src="https://img.shields.io/github/stars/NextSpot045/Managerjs.svg?style=social&label=Stars&maxAge=2592000" >
+   <img src="https://img.shields.io/github/watchers/NextSpot045/Managerjs.svg?style=social&label=Watchers&maxAge=2592000" >
+</a>
+
 <h3>What is it?</h3>
 
 <p><b>Manager.js</b> is a <b>javascript</b> library that lets you use  
