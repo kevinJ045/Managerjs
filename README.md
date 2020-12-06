@@ -1,13 +1,5 @@
 # **Manager.js**
 
-<p align="center">
-  <img src="https://mngrjs.netlify.app/docs/favicon.png" width="150px" alt="Managerjs logo"/>
-</p>
-
-![Forks](https://img.shields.io/github/forks/NextSpot045/Managerjs.svg?style=social&label=Forks&maxAge=259200)
-![Stars](https://img.shields.io/github/stars/NextSpot045/Managerjs.svg?style=social&label=Stars&maxAge=259200)
-![Watchers](https://img.shields.io/github/watchers/NextSpot045/Managerjs.svg?style=social&label=Watchers&maxAge=259200)
-
 ## What is it?
 
 **Manager.js** is a **javascript** library that lets you use  
@@ -32,46 +24,24 @@ Made it soo easy to use it
 
 ### Importing
 
-```html
-<script src="/path/to/manager.js" type="application/javascript"></script>
-```
+  ```html
+  &lt;script src="/path/to/manager.js">&lt;/script>
+  ```
 
 ### Usage
 
-```javascript
-  Manager.module();
-``` 
-### Basic Modules
-LSM/Local Storage Manager. visit [LSM.js](https://github.com/kevinJ045/LSM_js/)
-```javascript
-  new Manager.LSM("name");
-```
-Time manager
-```javascript
-  new Manager.TM();
-```
-require scripts
-```javascript
-  Manager.require("/path/to/script.js");
-```
-extend functions to make them global
-```javascript
-  Manager.extends(function,"functionName");
-```
+  ```javascript
+  	Manager.module();
+  ``` 
 
 ## Compatibility
 
 **Manager.js** is compatible with almost everywhere.  
-but it currently needs Jquery as a main executor,
+but it currently needs Jquery as a main excutor,
 
 ## Demo
 
-There is a demo at this repo,
-open it and be sure to open the DevTools,
-also you can visit the [Demo](https://mngrjs.netlify.app/) here,
-
-## Visit the [wiki](https://github.com/NextSpot045/Managerjs/wiki) For more Info.
-
-# [**Docs**](https://mngrjs.netlify.app/docs) Or [**Demo**](https://mngrjs.netlify.app/)
+There is a demo at this repo, open it and be sure to open  
+the DevTools,
 
 # Thanks !!
