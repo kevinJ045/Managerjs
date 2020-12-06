@@ -1,8 +1,0 @@
-{
-	"/": {
-		"url": "/static/home.html"
-	},
-	"/modules": {	
-		"url": "/static/modules.html"
-	}
-}
