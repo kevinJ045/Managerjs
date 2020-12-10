@@ -12,4 +12,4 @@
 </ul>
 
 <h3>Why should i use?</h3>
-<p>Is you don't want ajax in your projects, well then you should use this one, because it does not validate if ajax/xmlhttprequest validity unlike the native manager, BUT do not use Manager Noajax if not required.</p>
+<p>If you don't want ajax in your projects, well then you should use this one, because it does not validate if ajax/xmlhttprequest is valid, unlike manager with ajax, BUT do not use Manager Noajax if not required.</p>
