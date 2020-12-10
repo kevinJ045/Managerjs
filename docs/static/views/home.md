@@ -286,17 +286,6 @@ extend functions to make them global
   </table>
 </div>
 
-<h3> Compatibility</h3>
-
-<b>Manager.js</b> is compatible with almost everywhere.  
-but it currently needs Jquery as a main executor,
-
-<h3> Demo</h3>
-
-<p>here is a demo at this repo,
-open it and be sure to open the DevTools,
-also you can visit the <a href="https://mngrjs.netlify.app/">Demo</a> here,</p>
-
 <p>A javascript library to manage Localstorage,Date,Cookies,Ajax/JQuery Ajax,Object Manager, it includes some of the amazing javasript apis i thought are usefull,</p>
 
 one of the main usefull apis is localstorage
@@ -328,3 +317,16 @@ The other one is the javascript manager though i didn't mention it before,
 
    Manager.exec('sayHello',"hii"); // function then arguments <br>
 </pre>
+
+<h3> Compatibility</h3>
+
+<b>Manager.js</b> is compatible with almost everywhere.  
+but it currently needs Jquery as a main executor,
+
+<h3> Demo</h3>
+
+<p>here is a demo at this repo,
+open it and be sure to open the DevTools,
+also you can visit the <a href="https://mngrjs.netlify.app/">Demo</a> here,</p>
+
+
