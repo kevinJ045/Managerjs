@@ -80,6 +80,30 @@ const _ROUTES = [
 		view: "./static/views/modules.md"
 	},
 	{
+		path: "/modules_1_6",
+		name: "Modules",
+		view: "./static/views/modules-1.6.md",
+		version: "1.1.6.4"
+	},
+	{
+		path: "/templates",
+		name: "Templates",
+		view: "./static/views/templates.md",
+		version: "1.1.6.4"
+	},
+	{
+		path: "/extras",
+		name: "Extras",
+		view: "./static/views/extras.md",
+		version: "1.1.6.4"
+	},
+	{
+		path: "/events",
+		name: "Events",
+		view: "./static/views/events.md",
+		version: "1.1.6.4"
+	},
+	{
 		path: "/randoms",
 		name: "Randomness",
 		view: "./static/views/randoms.md"
@@ -279,7 +303,7 @@ window.addEventListener('popstate',router);
 //$("#app").click(router);
 
 for (var i = 0; i < _ROUTES.length; i++) {
-	var route = _ROUTES[i],
+	var route = _ROUTES[i],name = route.name,
 			link = route.path;
 	if(route.isVisible != null && route.isVisible == false){
 		continue;
@@ -289,9 +313,13 @@ for (var i = 0; i < _ROUTES.length; i++) {
 		link = route.isVisible;
 	}
 
+	if(route.version){
+		name += "<br><small>only available in V"+route.version+"</small>";
+	}
+
 	$("#navBar").append(`
 		<li><a href="javascript:void(0)" data-href="${link}" class="nav__link">
-			${route.name}
+			${name}
 		</a></li>
 	`);
 }

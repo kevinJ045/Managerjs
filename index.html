@@ -18,7 +18,6 @@
   <center>
     <img width="150px" src="docs/favicon.png" />
   </center>
-   
   <a href="https://github.com/NextSpot045/Managerjs/">
      <img src="https://img.shields.io/github/forks/NextSpot045/Managerjs.svg?style=social&label=Forks&maxAge=2592000" >
      <img src="https://img.shields.io/github/stars/NextSpot045/Managerjs.svg?style=social&label=Stars&maxAge=2592000" >
@@ -29,7 +28,7 @@
   <a class="a github-commit" href="https://github.com/NextSpot045/Managerjs">
     GitHub Forks: NAN <!-- Here Will be appended the forks from github-->
   </a>
-  <a class="a" href="docs">
+  <a class="a" href="docs/index.html">
     Docs <i class="fa fa-book"></i>
   </a>
 
@@ -238,13 +237,14 @@
 
         <div class="box">
           Using { {id} } to print words,<br>
-          {{Greeting}} {{undefinedItem}}
+          {{Greeting}} {{undefinedItem}} {{$m.version}} <br>
+          Today: {{#js 'new $.m.TM().time.today'}}{{this}}{{/js}}
         </div>
 
         <div class="box">
           Using { {#each id} } for loops.<br>
           {{#each Icons.pack1}}
-            <p>icon: {{this.src}}{{this.name}}</p>
+            <p>icon: {{this.src}}/{{this.name}}</p>
           {{/each}}
         </div>
 
@@ -462,30 +462,82 @@
   <script type="application/javascript" src="./dist/manager.min.js"></script>
 
   <script>
+    // Full Manager Informations
+    var instance = Manager.$main;
+
+    console.log(
+    //  "Managerjs:","\n",
+    //  "name: "+ Manager.version.el,"\n",
+    //  "version: "+ Manager.version,"\n",
+    //  "versionName: "+ Manager.version.name,"\n",
+    //  "author: "+ Manager.version.author,"\n",
+    //  "type: "+ typeof Manager,"\n",
+    //  "prototype:",Manager.__managerProto__,"\n",
+    //  "instance:",instance
+    instance
+    );
+  </script>
+
+  <script>
+    // All Manager Events
+    console.groupCollapsed("Manager Events");
+
+    window.addEventListener('manager:module',function(event){
+      //console.log('From Event:"manager:module"',event);
+    });
+    window.addEventListener('manager:lsm:set',function(event){
+      //console.log('From Event:"manager:lsm:set"',event);
+    });
+    window.addEventListener('manager:lsm:get',function(event){
+      //console.log('From Event:"manager:lsm:get"',event);
+    });
+    window.addEventListener('manager:lsm:remove',function(event){
+      //console.log('From Event:"manager:lsm:remove"',event);
+    });
+    window.addEventListener('manager:require',function(event){
+      //console.log('From Event:"manager:require"',event);
+    });
+    window.addEventListener('manager:extend',function(event){
+      //console.log('From Event:"manager:extend"',event);
+    });
+    window.addEventListener('manager:fetch',function(event){
+      //console.log('From Event:"manager:fetch"',event);
+    });
+    window.addEventListener('manager:objm:set',function(event){
+      //console.log('From Event:"manager:objm:set"',event);
+    });
+    window.addEventListener('manager:objm:get',function(event){
+      //console.log('From Event:"manager:objm:get"',event);
+    });
+    window.addEventListener('manager:objm:ctrl',function(event){
+      //console.log('From Event:"manager:objm:ctrl"',event);
+    });
+    window.addEventListener('manager:script',function(event){
+      //console.log('From Event:"manager:script"',event);
+    });
+
+    console.groupEnd("Manager Events");
+  </script>
+
+  <script>
     Manager.require('./data/typer.js');//.appendTo('body');
     var reqjs = Manager.require('./data/req.js',{
       "as": "hello",
       "extends": true,
     });
 
-    //hello();
-
     reqjs.ready(function(script){
       //console.log(script.script,script.file)
       //hello(); // This is right
     });
 
-    var instance = Manager.__managerProto__.ManagerInstance;
+    Manager.require('./demo/req_module.js');
 
     Manager.getScript('./src/cp');
 
     //hello(); // This will return an error();
 
     $.m.require('./demo/demo.js'); // Using $.m ShortCut
-
-    console.log(
-    Manager.info.name+","+Manager.info.version
-    ,instance,typeof Manager,typeof Manager.__proto__,"manager");
   </script>
 
   <script type="text/javascript">

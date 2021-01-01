@@ -36,7 +36,7 @@
 
   <section data-title="Compatiblity" id="section-compatiblity">
     <h2 data-type="Manager js compatiblity"></h2>
-    <p data-type="Manager.js is compatible with every framework.^ bootstrap,materialize,framework7, etc... this little plugin is realy important to use,^"></p>
+    <p data-type="Manager.js is compatible with every framework.^ bootstrap,materialize,framework7, etc... this little plugin is realy important to use,^With exeption of No Ajax"></p>
   </section>
 
   <section data-title="Table o' contents" id="section-TABLE">
@@ -396,13 +396,63 @@
   <script type="application/javascript"
   		  src="./dist/manager.noajax.min.js"></script>
   <script type="text/javascript" src="./data/typer.js"></script>
+  <script type="text/javascript" src="./demo/req_module.js"></script>
   <script type="text/javascript" src="./demo/demo.noajax.js"></script>
   <script type="text/javascript">
-  	var instance = Manager.__managerProto__.ManagerInstance;
+  	// Full Manager Informations
+    var instance = Manager.$main;
 
     console.log(
-    Manager.info.name+","+Manager.info.version
-    ,instance,typeof Manager,typeof Manager.__proto__,"manager");
+    //  "Managerjs:","\n",
+    //  "name: "+ Manager.version.el,"\n",
+    //  "version: "+ Manager.version,"\n",
+    //  "versionName: "+ Manager.version.name,"\n",
+    //  "author: "+ Manager.version.author,"\n",
+    //  "type: "+ typeof Manager,"\n",
+    //  "prototype:",Manager.__managerProto__,"\n",
+    //  "instance:",instance
+    instance
+    );
+  </script>
+  <script>
+    // All Manager Events
+    console.groupCollapsed("Manager Events");
+
+    window.addEventListener('manager:module',function(event){
+      //console.log('From Event:"manager:module"',event);
+    });
+    window.addEventListener('manager:lsm:set',function(event){
+      //console.log('From Event:"manager:lsm:set"',event);
+    });
+    window.addEventListener('manager:lsm:get',function(event){
+      //console.log('From Event:"manager:lsm:get"',event);
+    });
+    window.addEventListener('manager:lsm:remove',function(event){
+      //console.log('From Event:"manager:lsm:remove"',event);
+    });
+    window.addEventListener('manager:require',function(event){
+      //console.log('From Event:"manager:require"',event);
+    });
+    window.addEventListener('manager:extend',function(event){
+      //console.log('From Event:"manager:extend"',event);
+    });
+    window.addEventListener('manager:fetch',function(event){
+      //console.log('From Event:"manager:fetch"',event);
+    });
+    window.addEventListener('manager:objm:set',function(event){
+      //console.log('From Event:"manager:objm:set"',event);
+    });
+    window.addEventListener('manager:objm:get',function(event){
+      //console.log('From Event:"manager:objm:get"',event);
+    });
+    window.addEventListener('manager:objm:ctrl',function(event){
+      //console.log('From Event:"manager:objm:ctrl"',event);
+    });
+    window.addEventListener('manager:script',function(event){
+      //console.log('From Event:"manager:script"',event);
+    });
+
+    console.groupEnd("Manager Events");
   </script>
 </body>
 </html>
